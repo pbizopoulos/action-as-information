@@ -1,0 +1,17 @@
+Information Action:
+- https://pbizopoulos.github.io/information-action
+
+Requirements:
+- POSIX compliant shell (ash, bash, dash, ksh, posh, yash or zsh)
+- Git (Any version)
+- Make (bmake or GNU Make)
+- npm
+
+Preparation:
+git clone https://github.com/pbizopoulos/information-action
+cd information-action/
+
+Basic commands:
+make		# Generate artifacts.
+make clean 	# Remove dependent directories.
+make help	# Show all commands.

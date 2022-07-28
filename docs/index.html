@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width, initial-scale=1" name="viewport">
+		<title>Information Action</title>
+		<link href="data:," rel="icon">
+		<link href="https://pbizopoulos.github.io/style.css" rel="stylesheet">
+		<link href="style.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" crossorigin="anonymous">
+		<script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js" crossorigin="anonymous"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+		<script defer src="https://d3js.org/d3.v7.min.js"></script>
+		<script defer src="sanConvEncoder.js"></script>
+		<script defer src="sanResize.js"></script>
+		<script defer src="noisyOneMotif.js"></script>
+		<script defer src="script.js"></script>
+	</head>
+	<body>
+		<div class="div-header">
+			<nav>
+				<a href="https://pbizopoulos.github.io">Home page</a> / <b>Information Action</b>
+			</nav>
+			<div class="div-source-code-link">
+				<a href="https://github.com/pbizopoulos/information-action">Source code</a>
+			</div>
+		</div>
+
+		<b>Abstract</b>
+
+		<p>
+		We use the concept of physical action, to define information action as proportional to the energy and description length of some data.
+		We then present Sparsely Activated Networks (SANs) and an interactive parametric dashboard, that allows exploring information action by modifying the input and the model configuration.
+		We demonstrate that minimizing the information action allows us to learn interpretable kernels in an unsupervised way.
+		Lastly, we discuss implications of this definition and how it relates with previous literature.
+		</p>
+
+		<b>Introduction</b>
+
+		<p>
+		Action is a functional that receives the history of a system as input and outputs a number.
+		For physical action, the most important property is that it is minimized for the history that nature chose to follow (e.g. the specific path that an object followed when left under the influence of gravity).
+		</p>
+
+		<p>
+		The system for which we will define 'information action', is data (set of numbers such as vectors) and the history is their description; how they 'arrived' to their value starting from a base of reference.
+		The units of this information action is energy multiplied by description length, similar to the physical action with the difference of using description length instead of time, since the latter is hardware independent.
+		In other words, information action is proportional to the quantity (energy) and duration (description length) of the system change.
+		In the physical world an object followed the one optimal path over the infinite possible paths.
+		However, data can be described in many different ways which poses the following question: "How can we get close to the optimal description?"
+		We will try to answer this question using Sparsely Activated Networks and searching for the minima of information action.
+		</p>
+
+		<b>Formal definition of Information Action</b>
+
+		<p>
+		Let \(x\) where \(x \in \mathbb{R}^n\) some data and \(d_x \in L\) a description of \(x\) using a description language \(L\).
+		We define information action \(\mathcal{I}\) of \(x\) w.r.t \(d_x\) as:
+		$$\mathcal{I} = \big\| x \big\| \big\| d_x \big\|$$
+		</p>
+
+		<p>
+		\(\big\| x \big\|\) can be calculated using any \(l_d\) norm.
+		Calculating \(\big\| d_x \big\|\), depends on the choice of \(d_x\), e.g. by choosing a neural network for \(d_x\) we could have the following:
+		$$\big\| d_x \big\| = W + a + c$$
+		, where \(W\) is the number of weights, \(a\) the number of activations when fed with \(x\) and \(c\) a constant that depends on the neural network architecture.
+		</p>
+
+		<p>
+		One way to use \(\mathcal{I}\) as a model (description) selection metric is to integrate a loss term by decomposing \(x\) in two additive terms \(x_0\) and \(x_1\):
+		$$x = x_0 + x_1$$
+		Calculating \(\mathcal{I}\) for both \(x_0\) and \(x_1\) we have:
+		$$\mathcal{I} = (\big\| x_0 \big\| + \big\| x_1 \big\|) (\big\| d_{x_0} \big\| + \big\| d_{x_1} \big\|)$$
+		We consider \(\big\| x_1 \big\|\) as the loss term and \(\big\| d_{x_1} \big\|\) could be assumed equal to the length of \(x\).
+		After training, \(d_{x_0}\) is used as a candidate description for \(x\).
+		</p>
+
+		<b>Sparsely Activated Networks</b>
+
+		<p>
+		We present Sparsely Activated Networks (SANs)<a href="#citation-1">[1]</a> in order to use them as \(d_{x_0}\).
+		Using SANs allows us to modify \(\big\| d_{x_0} \big\|\) during training using the following (either individually or in combination):
+		<ul>
+			<li>\(T_a(x, c)\): Amplitude threshold function</li>
+			<li>\(\phi\): Activation function</li>
+			<li>\(T_e(x, c)\): Minimum distance threshold function</li>
+		</ul>
+		</p>
+
+		<p>
+		During training, we calculate \(\hat{x}\) as follows:
+		$$\hat{x} = \sum_{i=1}^m{w_i * T_e(\phi(T_a(w_i * x)))}$$
+		, where \(w_i \in \mathbb{R}^{k_i}\) are the \(m\) trainable weights and \(*\) is the convolution operator.
+		</p>
+
+		<p>
+		\(w_i\) are learnt by calculating the loss \(L\) w.r.t. to \(w_i\) and then updating as follows:
+		$$\nabla L = \bigg(\frac{\partial L}{\partial w_1},...,\frac{\partial L}{\partial w_m}\bigg)$$
+		$$\Delta w_i \leftarrow -\lambda\frac{\partial L}{\partial w_i}$$
+		, where \(\lambda\) is the learning rate.
+		</p>
+
+		<p>
+		For reconstructing (describing) \(x\), we set the activations \(\alpha_i = T_e(\phi(T_a(w_i * x)))\) and use the following:
+		$$\hat{x} = \sum_{i=1}^m{w_i * \alpha_i}$$
+		</p>
+
+		<p>
+		Calculating \(d_{x_0}\) from the previous:
+		$$d_{x_0} = \max\bigg((\dim(x) + 1)\sum_{i=1}^m{\big\|\alpha_i\big\|_0}, n\bigg) + \sum_{i=1}^m{k_i}$$
+		, where \(\dim\) denotes dimensionality, \(\max\) the maximum function and we ignore the neural network architecture constant \(c\) as it does not change within our experiment.
+		</p>
+
+		<b>Interactive parametric dashboard</b>
+
+		<p>
+		Here we demonstrate the calculation of \(\mathcal{I}\) of motif-based time-series w.r.t descriptions created by SANs.
+		The dashboard consists of four types of blocks indicated by the background color:
+		<ul>
+			<li><svg width="14" height="14" style="fill:white;stroke:black"><rect width="14" height="14" /></svg> SAN architecture with data flow.</li>
+			<li><svg width="14" height="14" style="fill:Gainsboro;stroke:black"><rect width="14" height="14" /></svg> parametric input control panel.</li>
+			<li><svg width="14" height="14" style="fill:Silver;stroke:black"><rect width="14" height="14" /></svg> parametric SAN control panel.</li>
+			<li><svg width="14" height="14" style="fill:DarkGray;stroke:black"><rect width="14" height="14" /></svg> start and reference control panel.</li>
+		</ul>
+		</p>
+
+		<div class="grid-container" id="gridContainerDiv">
+			<div class="grid-item" id="inputControlDiv1" style="background-color:Gainsboro;border:solid;visibility:hidden;">
+				<div>
+					<text>\(n\) = </text>
+					<text id="sizeText"></text>
+					<input id="sizeInputRange" max="100" min="2" type="range">
+				</div>
+				<div>
+					<text id="velocityText"></text>
+					<input id="velocityInputRange" max="20" min="0" type="range">
+				</div>
+			</div>
+			<div class="grid-item" id="inputControlDiv2" style="background-color:Gainsboro;border:solid;visibility:hidden;">
+				<div>
+					<input id="channelUseInputCheckbox" type="checkbox">
+					<svg height="14" id="inputChannelMotifColoredBoxSvg" width="14">
+						<rect height="14" width="14" />
+					</svg>
+					<select id="inputChannelIndexSelect"></select>
+				</div>
+				<div>
+					<text>type: </text>
+					<select id="inputChannelMotifTypeSelect"></select>
+				</div>
+				<div>
+					<text id="channelMotifSizeText"></text>
+					<input type="range" id="channelMotifSizeInputRange" min="1" max="100">
+				</div>
+				<div>
+					<text id="channelAmplitudeBaseText"></text>
+					<input id="channelAmplitudeBaseInputRange" max="1" min="-1" step="0.1" type="range">
+				</div>
+			</div>
+			<div class="grid-item" id="inputControlDiv3" style="background-color:Gainsboro;border:solid;visibility:hidden;">
+				<div>
+					<text id="channelAmplitudeMaxText"></text>
+					<input type="range" id="channelAmplitudeMaxInputRange" min="-1" step="0.1" max="1">
+				</div>
+				<div>
+					<text id="channelDistanceMinText"></text>
+					<input id="channelDistanceMinInputRange" max="100" min="0" type="range" >
+				</div>
+					<div>
+						<text id="channelDistanceMaxText"></text>
+						<input id="channelDistanceMaxInputRange" max="100" min="0" type="range" >
+					</div>
+			</div>
+			<div class="grid-item" id="inputControlDiv4" style="background-color:Gainsboro;border:solid;visibility:hidden;">
+				<div>
+					<label>
+						dynamic noise:<input id="noiseInitializeInputCheckbox" type="checkbox">
+					</label>
+				</div>
+				<div>
+					<text>noise: </text>
+					<select id="inputNoiseTypeSelect"></select>
+				</div>
+				<div>
+					<text id="noiseSigmaText"></text>
+					<input id="noiseSigmaInputRange" max="1" min="0" step="0.1" type="range">
+				</div>
+			</div>
+			<div class="grid-item" id="inputControlDiv5" style="background-color:Gainsboro;border:solid;visibility:hidden;">
+				<div>
+					<text>resize function: </text>
+					<select id="inputResizeFunctionSelect"></select>
+				</div>
+				<div>
+					<text id="resizeMultiplierText"></text>
+					<input id="resizeMultiplierInputRange" max="1" min="0.1" step="0.1" type="range">
+				</div>
+				<div>
+					<text id="quantizationStatesNumText"></text>
+					<input id="quantizationStatesNumInputRange" max="100" min="1" type="range">
+				</div>
+				<div>
+					<label>
+						standardize:<input id="standardizeInputCheckbox" type="checkbox">
+					</label>
+				</div>
+			</div>
+			<div class="grid-item" id="neurolControlDiv1" style="background-color:Silver;border:solid;visibility:hidden;">
+				<div>
+					<input id="neuronUseInputCheckbox" type="checkbox">
+					<svg height="14" id="neuronColoredBoxSvg" width="14">
+						<rect height="14" width="14" />
+					</svg>
+					<select id="neuronIndexSelect"></select>
+				</div>
+				<div>
+					<text>init: </text>
+					<select id="kernelInitializationSelect"></select>
+				</div>
+				<div>
+					<text id="kernelSizeText"></text>
+					<input id="kernelSizeInputRange" min="1" type="range">
+				</div>
+				<div>
+					<text id="kernelAmplitudeText"></text>
+					<input id="kernelAmplitudeInputRange" max="1" min="-1" step="0.1" type="range">
+				</div>
+			</div>
+			<div class="grid-item" id="neuronControlDiv2" style="background-color:Silver;border:solid;visibility:hidden;">
+				<div>
+					<text>resize function: </text>
+					<select id="kernelResizeFunctionSelect"></select>
+				</div>
+				<div>
+					<text id="kernelResizeMultiplierText"></text>
+					<input id="kernelResizeMultiplierInputRange" max="100" min="0.1" step="0.1" type="range" >
+				</div>
+			</div>
+			<div class="grid-item" id="inputDiv" style="border:solid"></div>
+			<div class="grid-item" id="horizontalLineDiv1"></div>
+			<div class="grid-item" id="horizontalLineDiv2"></div>
+			<div class="grid-item" id="convEncoderDiv"></div>
+			<div class="grid-item" id="similaritiesDiv" style="border:solid"></div>
+			<div class="grid-item" id="neuronControlDiv3" style="background-color:Silver;border:solid;visibility:hidden;">
+				<div>
+					<label>
+						ConvEncoder:<input id="convEncoderUseInputCheckbox" type="checkbox">
+					</label>
+				</div>
+				<div>
+					<text id="kernelStrideText"></text>
+					<input id="kernelStrideInputRange" min="1" type="range">
+				</div>
+				<div>
+					<text>resize function: </text>
+					<select id="strideResizeFunctionSelect"></select>
+				</div>
+			</div>
+			<div class="grid-item" id="lossControlDiv" style="background-color:Silver;border:solid;visibility:hidden;">
+				<div>
+					<text>optimizer: </text>
+					<select id="optimizerSelect"></select>
+				</div>
+				<div>
+					<text>loss: </text>
+					<select id="lossFunctionSelect"></select>
+				</div>
+				<div>
+					<text id="learningRateText"></text>
+					<input id="learningRateExponentInputRange" max="1" min="-3" step="0.1" type="range">
+				</div>
+			</div>
+			<div class="grid-item" id="lossDiv"></div>
+			<div class="grid-item" id="ndnlDiv" style="border:solid"></div>
+			<div class="grid-item" id="helpDiv"></div>
+			<div class="grid-item" id="kernelDiv" style="border:solid"></div>
+			<div class="grid-item" id="activationFunctionDiv"></div>
+			<div class="grid-item" id="activationFunctionControlDiv" style="background-color:Silver;border:solid">
+				<div>
+					<text id="activationAmplitudeMinText"></text>
+					<input id="activationAmplitudeMinInputRange" max="1" min="0" step="0.1" type="range">
+				</div>
+				<div>
+					<text>\(\phi\): </text>
+					<select id="activationFunctionSelect"></select>
+				</div>
+				<div>
+					<text id="activationDistanceMinText"></text>
+					<input id="activationDistanceMinInputRange" type="range" min="0">
+				</div>
+				<div>
+					<label id="activationRegulatesLabel" style="visibility:hidden;">
+						regulates:<input type="checkbox" id="activationRegulatesInputCheckbox">
+					</label>
+				</div>
+				<div>
+					<label id="activationRegulatedLabel" style="visibility:hidden;">
+						regulated:<input id="activationRegulatedInputCheckbox" type="checkbox">
+					</label>
+				</div>
+			</div>
+			<div class="grid-item" id="actionDiv" style="background-color:Silver;border:solid">
+				<div>
+					<text>\(\big\| x_0 \big\|\) = </text><text id="inputReconstructionEnergyText"></text>
+				</div>
+				<div>
+					<text>\(\big\| x_1 \big\|\) = </text><text id="inputReconstructionLossText"></text>
+				</div>
+				<div>
+					<text>\(\big\| d_{x_0} \big\|\) = </text><text id="descriptionLengthText"></text>
+				</div>
+				<div>
+					<text>\(\big\| d_{x_1} \big\|\) = </text><text id="lossDescriptionLengthText"></text>
+				</div>
+				<div>
+					<text>\(\mathcal{I}\) = </text><text id="actionText"></text>
+				</div>
+			</div>
+			<div class="grid-item" id="reconstructionDiv" style="border:solid"></div>
+			<div class="grid-item" id="sumDiv"></div>
+			<div class="grid-item" id="kernelReconstructionsDiv" style="border:solid"></div>
+			<div class="grid-item" id="convDecoderDiv"></div>
+			<div class="grid-item" id="activationsDiv" style="border:solid"></div>
+			<div class="grid-item" id="startPauseResetControlDiv" style="background-color:DarkGray;border:solid">
+				<div>
+					<input id="startPauseButton" type="button">
+					<input id="stopButton" type="button" value="stop">
+				</div>
+				<div>
+					<text>example: </text>
+					<select id="exampleSelect"></select>
+				</div>
+				<div>
+					<text id="epochText"></text>
+				</div>
+				<div>
+					<text id="timePerEpochText"></text>
+				</div>
+				<div>
+					<label>
+						advanced:<input type="checkbox" id="advancedInputCheckbox">
+					</label>
+				</div>
+			</div>
+			<div class="grid-item" id="referenceControlDiv" style="background-color:DarkGray;border:solid;visibility:hidden;">
+				<div>
+					<select id="referenceFunctionSelect"></select>
+				</div>
+				<div>
+					<text>\(\big\| x_0 \big\|\) = </text><text id="referenceZeroReconstructionLossText"></text>
+				</div>
+				<div>
+					<text>\(\big\| x_1 \big\|\) = </text><text id="referenceReconstructionLossText"></text>
+				</div>
+				<div>
+					<text>\(\big\| d_{x_0} \big\|\) = </text><text id="referenceDescriptionLengthText"></text>
+				</div>
+				<div>
+					<text>\(\big\| d_{x_1} \big\|\) = </text><text id="referenceLossDescriptionLengthText"></text>
+				</div>
+				<div>
+					<text>\(\mathcal{I}\) = </text><text id="referenceActionText"></text>
+				</div>
+			</div>
+		</div>
+		</div>
+
+		<p>
+		We notice that sparse activations produce lower \(\mathcal{I}\).
+		Also by modifying \(T_a\) and \(T_e\) the local minima of \(\mathcal{I}\) correspond to more interpretable kernels (peaks).
+		</p>
+
+		<b>Discussion</b>
+
+		<p>
+		We can view \(\mathcal{I}\) as a deterministic metric of the informational content of \(x\) that is perceived by \(d_x\); the lower the value of \(\mathcal{I}\) is, the less information (or less random) it is perceived by \(d_x\).
+		\(\mathcal{I}\) could be viewed as a lossy compression metric and if viewed as an intelligence metric, it is in contrast with previous literature that assumes intelligence is lossless compression<a href="#citation-2">[2]</a>.
+		</p>
+
+		<p>
+		According to previous literature information is traditionally quantified as proportional to the degree of surprise that is contained in the data<a href="#citation-3">[3]</a>.
+		However, this requires assuming the probability distribution of the data generator.
+		Kolmogorov-based information (complexity) of some data is defined as the minimal string that exactly describes it, but this is uncomputable<a href="#citation-4">[4]</a> and requires an exact description of the data.
+		Information action on the other hand, can be seen as a generalization of Kolmogorov-based information; if \(x\) is immutable then \(\big\| x \big\|\) is constant, then the problem of minimizing \(\mathcal{I}\) is uncomputable, since it is equivalent with Kolmogorov complexity.
+		Information action is also differs from the algorithmic information theory<a href="#citation-5">[5]</a>, since it does not depend on any notion of probability.
+		</p>
+
+		<p>
+		Practically, the minimization of information action can be used for model selection in unsupervised problems since it does not require an exact reconstruction like the Minimum Description Language (MDL).
+		From the same point of view \(\mathcal{I}\) could also be viewed as a quantification of the bias-variance trade-off.
+		</p>
+
+		<p>
+		More generally, minimization of information action could be used to help answer the question: "Why do we create and use languages?": "Because this is one way to reduce the information action of our observations.".
+		Observers (e.g. biological/silicon brains, sensory organs, measuring instruments) as part of their environment, do not have enough capacity to store their observations.
+		To overcome this, a part of their capacity could be used to learn and operate languages (natural, programming, mathematical, computational etc.).
+		This allows the observers to describe their observations, in order to make sense of the world and communicate.
+		However, this conciseness that languages provide comes with the cost of decreased accuracy.
+		For example, the brain internally reconstructs (describes) sensory observations with accuracy constrained by the physiology of each sensory organ (e.g. the human eye cant distinguish objects less than a tenth of a millimeter).
+		Similarly, biological organisms describe concepts or thoughts to varying levels of accuracy constrained by the expressiveness of the language used within an environment.
+		In the interactive dashboard, we could view the set of kernels as the language that is learned which along with the activations create the description of the input.
+		</p>
+
+		<b>Conclusions</b>
+
+		<p>
+		By defining information action for data and their descriptions we conclude that minimizing this quantity provides us with accurate and concise descriptions of data in the same way that physical action shows as the path that nature chose to take.
+		</p>
+
+		<b>References</b>
+
+		<p id="citation-1">[1] Bizopoulos, Paschalis, and Dimitrios Koutsouris. "Sparsely activated networks." IEEE Transactions on Neural Networks and Learning Systems 32.3 (2020): 1304-1313.</p>
+		<p id="citation-2">[2] Hutter, Marcus. "The human knowledge compression contest." URL http://prize. hutter1. net 6 (2012).</p>
+		<p id="citation-3">[3] Shannon, Claude Elwood. "A mathematical theory of communication." ACM SIGMOBILE mobile computing and communications review 5.1 (2001): 3-55.</p>
+		<p id="citation-4">[4] Li, Ming, and Paul Vitányi. An introduction to Kolmogorov complexity and its applications. Vol. 3. New York: Springer, 2008.</p>
+		<p id="citation-5">[5] Chaitin, Gregory J. "Algorithmic information theory." IBM journal of research and development 21.4 (1977): 350-359.</p>
+	</body>
+</html>
