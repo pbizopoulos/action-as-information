@@ -1,5 +1,5 @@
-Information Action:
-- https://pbizopoulos.github.io/information-action
+Action as Information:
+- https://pbizopoulos.github.io/action-as-information
 
 Requirements:
 - POSIX compliant shell (ash, bash, dash, ksh, posh, yash or zsh)
@@ -8,8 +8,8 @@ Requirements:
 - npm
 
 Preparation:
-git clone https://github.com/pbizopoulos/information-action
-cd information-action/
+git clone https://github.com/pbizopoulos/action-as-information
+cd action-as-information/
 
 Basic commands:
 make		# Generate artifacts.

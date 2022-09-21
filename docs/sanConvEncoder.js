@@ -52,8 +52,8 @@ const sanConvEncoder = {
 		"activation": {
 			"amplitudeMin": 0,
 			"data": null,
-			"distanceMin": 0,
-			"function_": "extrema",
+			"distanceMin": 8,
+			"function_": "none",
 			"regulated": false,
 			"regulates": false
 		},
@@ -73,7 +73,7 @@ const sanConvEncoder = {
 			"amplitudeMin": 0,
 			"data": null,
 			"distanceMin": 0,
-			"function_": "extrema",
+			"function_": "none",
 			"regulated": false,
 			"regulates": false
 		},
@@ -93,7 +93,7 @@ const sanConvEncoder = {
 			"amplitudeMin": 0,
 			"data": null,
 			"distanceMin": 0,
-			"function_": "extrema",
+			"function_": "none",
 			"regulated": false,
 			"regulates": false
 		},

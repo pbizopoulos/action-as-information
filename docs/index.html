@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta content="width=device-width, initial-scale=1" name="viewport">
-		<title>Information Action</title>
+		<title>Action as Information</title>
 		<link href="data:," rel="icon">
 		<link href="https://pbizopoulos.github.io/style.css" rel="stylesheet">
 		<link href="style.css" rel="stylesheet">
@@ -20,67 +20,73 @@
 	<body>
 		<div class="div-header">
 			<nav>
-				<a href="https://pbizopoulos.github.io">Home page</a> / <b>Information Action</b>
+				<a href="https://pbizopoulos.github.io">Home page</a> / <b>Action as Information</b>
 			</nav>
 			<div class="div-source-code-link">
-				<a href="https://github.com/pbizopoulos/information-action">Source code</a>
+				<a href="https://github.com/pbizopoulos/action-as-information">Source code</a>
 			</div>
 		</div>
 
 		<b>Abstract</b>
 
 		<p>
-		We use the concept of physical action, to define information action as proportional to the energy and description length of some data.
-		We then present Sparsely Activated Networks (SANs) and an interactive parametric dashboard, that allows exploring information action by modifying the input and the model configuration.
-		We demonstrate that minimizing the information action allows us to learn interpretable kernels in an unsupervised way.
-		Lastly, we discuss implications of this definition and how it relates with previous literature.
+		We define action as proportional to the energy and description length of some data.
+		We then present Sparsely Activated Networks (SANs) and an interactive parametric dashboard, that allows exploring action by modifying the input and the model configuration.
+		We demonstrate the use of action as a loss function, which results in learning interpretable kernels.
+		Lastly, we argue that this definition of action can be used to quantify information and discuss how it relates with previous literature.
 		</p>
 
 		<b>Introduction</b>
 
 		<p>
 		Action is a functional that receives the history of a system as input and outputs a number.
-		For physical action, the most important property is that it is minimized for the history that nature chose to follow (e.g. the specific path that an object followed when left under the influence of gravity).
+		In physics, the defining property of action is that it is minimized for the history that nature chose to follow (e.g. the specific path that an object followed when left under the influence of gravity).
 		</p>
 
 		<p>
-		The system for which we will define 'information action', is data (set of numbers such as vectors) and the history is their description; how they 'arrived' to their value starting from a base of reference.
-		The units of this information action is energy multiplied by description length, similar to the physical action with the difference of using description length instead of time, since the latter is hardware independent.
-		In other words, information action is proportional to the quantity (energy) and duration (description length) of the system change.
-		In the physical world an object followed the one optimal path over the infinite possible paths.
-		However, data can be described in many different ways which poses the following question: "How can we get close to the optimal description?"
-		We will try to answer this question using Sparsely Activated Networks and searching for the minima of information action.
-		</p>
-
-		<b>Formal definition of Information Action</b>
-
-		<p>
-		Let \(x\) where \(x \in \mathbb{R}^n\) some data and \(d_x \in L\) a description of \(x\) using a description language \(L\).
-		We define information action \(\mathcal{I}\) of \(x\) w.r.t \(d_x\) as:
-		$$\mathcal{I} = \big\| x \big\| \big\| d_x \big\|$$
+		The system for which we will define action is data (e.g. a set of numbers such as vectors) and the history is their description; how they 'arrived' to their value starting from a base of reference.
+		The dimensions of action is energy &times; time, however in our definition we use description length as a hardware-independent measure of time.
+		In other words, action is proportional to the quantity (energy) and duration (description length) of the system change.
 		</p>
 
 		<p>
-		\(\big\| x \big\|\) can be calculated using any \(l_d\) norm.
-		Calculating \(\big\| d_x \big\|\), depends on the choice of \(d_x\), e.g. by choosing a neural network for \(d_x\) we could have the following:
-		$$\big\| d_x \big\| = W + a + c$$
-		, where \(W\) is the number of weights, \(a\) the number of activations when fed with \(x\) and \(c\) a constant that depends on the neural network architecture.
+		In the physical world, an object followed the one optimal path over the infinite possible paths, which can be found by minimizing the action.
+		However, data can be described in many different ways, which poses the following questions:
+		<ul>
+			<li>How can we approximate the optimal description that minimizes action?</li>
+			<li>How can we interpret the value of the action?</li>
+		</ul>
+		We will try to answer the first question using Sparsely Activated Networks and then argue that action is the quantity of information of the data as 'perceived' by a description.
+		</p>
+
+		<b>Formal definition of Action</b>
+
+		<p>
+		Let \(x \in \mathbb{R}^n\) some data and \(d \in D\) a description of \(x\), where \(D\) a description language.
+		We define action \(\mathcal{S}\) of \(x\) w.r.t. \(d\) as:
+		$$\mathcal{S} = E t$$
 		</p>
 
 		<p>
-		One way to use \(\mathcal{I}\) as a model (description) selection metric is to integrate a loss term by decomposing \(x\) in two additive terms \(x_0\) and \(x_1\):
-		$$x = x_0 + x_1$$
-		Calculating \(\mathcal{I}\) for both \(x_0\) and \(x_1\) we have:
-		$$\mathcal{I} = (\big\| x_0 \big\| + \big\| x_1 \big\|) (\big\| d_{x_0} \big\| + \big\| d_{x_1} \big\|)$$
-		We consider \(\big\| x_1 \big\|\) as the loss term and \(\big\| d_{x_1} \big\|\) could be assumed equal to the length of \(x\).
-		After training, \(d_{x_0}\) is used as a candidate description for \(x\).
+		, where \(E = \big\| x \big\|\) and \(t = \big\| d \big\|\).
+		Calculating the former is easy, however calculating the latter heavily depends on \(d\), e.g. choosing a neural network as \(d\) we could have the following:
+		$$t = W + a + c$$
+		, where \(W\) is the number of weights, \(a\) the number of activations when fed with \(x\) and \(c\) a constant that is the description length of the neural network architecture.
+		</p>
+
+		<p>
+		Consider an additive noise term \(x_n\):
+		$$x = \hat{x} + x_n$$
+		Therefore \(\mathcal{S}\) is:
+		$$\mathcal{S} = E t + E_n t_n = \big\| \hat{x} \big\| \big\| d \big\| + \big\| x_n \big\| \big\| d_n \big\|$$
+		,where \(d\) is a candidate description for \(x\), \(E_n\) the loss term and \(t_n\) the description length of \(x_n\) which could be considered as equal to the length of \(x\) in the worst case.
 		</p>
 
 		<b>Sparsely Activated Networks</b>
 
 		<p>
-		We present Sparsely Activated Networks (SANs)<a href="#citation-1">[1]</a> in order to use them as \(d_{x_0}\).
-		Using SANs allows us to modify \(\big\| d_{x_0} \big\|\) during training using the following (either individually or in combination):
+		We present Sparsely Activated Networks (SANs)<a href="#citation-1">[1]</a> in order to use them as \(d\).
+		The reason we use SANs is that it easily allows us modify \(t\) during training with the following operators (either individually or in combination):
 		<ul>
 			<li>\(T_a(x, c)\): Amplitude threshold function</li>
 			<li>\(\phi\): Activation function</li>
@@ -91,11 +97,11 @@
 		<p>
 		During training, we calculate \(\hat{x}\) as follows:
 		$$\hat{x} = \sum_{i=1}^m{w_i * T_e(\phi(T_a(w_i * x)))}$$
-		, where \(w_i \in \mathbb{R}^{k_i}\) are the \(m\) trainable weights and \(*\) is the convolution operator.
+		, where \(w_i \in \mathbb{R}^{k_i}\) are the \(m\) trainable weights, \(k_i \in \mathbb{N}\) are the kernel lengths and \(*\) is the convolution operator.
 		</p>
 
 		<p>
-		\(w_i\) are learnt by calculating the loss \(L\) w.r.t. to \(w_i\) and then updating as follows:
+		\(w_i\) are learnt by backpropagating the loss \(L\) w.r.t. to \(w_i\):
 		$$\nabla L = \bigg(\frac{\partial L}{\partial w_1},...,\frac{\partial L}{\partial w_m}\bigg)$$
 		$$\Delta w_i \leftarrow -\lambda\frac{\partial L}{\partial w_i}$$
 		, where \(\lambda\) is the learning rate.
@@ -107,21 +113,21 @@
 		</p>
 
 		<p>
-		Calculating \(d_{x_0}\) from the previous:
-		$$d_{x_0} = \max\bigg((\dim(x) + 1)\sum_{i=1}^m{\big\|\alpha_i\big\|_0}, n\bigg) + \sum_{i=1}^m{k_i}$$
-		, where \(\dim\) denotes dimensionality, \(\max\) the maximum function and we ignore the neural network architecture constant \(c\) as it does not change within our experiment.
+		Calculating \(t\) from the previous:
+		$$t = \max\bigg((\dim(x) + 1)\sum_{i=1}^m{\big\|\alpha_i\big\|_0}, n\bigg) + \sum_{i=1}^m{k_i}$$
+		, where \(\dim\) denotes dimensionality, \(\max\) the maximum function and we omit the neural network architecture constant \(c\) as it does not change within our experiment.
 		</p>
 
 		<b>Interactive parametric dashboard</b>
 
 		<p>
-		Here we demonstrate the calculation of \(\mathcal{I}\) of motif-based time-series w.r.t descriptions created by SANs.
+		Here we demonstrate the calculation of \(\mathcal{S}\) of motif-based time-series w.r.t. SANs as \(d\).
 		The dashboard consists of four types of blocks indicated by the background color:
 		<ul>
-			<li><svg width="14" height="14" style="fill:white;stroke:black"><rect width="14" height="14" /></svg> SAN architecture with data flow.</li>
-			<li><svg width="14" height="14" style="fill:Gainsboro;stroke:black"><rect width="14" height="14" /></svg> parametric input control panel.</li>
-			<li><svg width="14" height="14" style="fill:Silver;stroke:black"><rect width="14" height="14" /></svg> parametric SAN control panel.</li>
-			<li><svg width="14" height="14" style="fill:DarkGray;stroke:black"><rect width="14" height="14" /></svg> start and reference control panel.</li>
+			<li><svg width="14" height="14" style="fill:white;stroke:black"><rect width="14" height="14" /></svg> SAN architecture with data flow</li>
+			<li><svg width="14" height="14" style="fill:Gainsboro;stroke:black"><rect width="14" height="14" /></svg> parametric input control panel</li>
+			<li><svg width="14" height="14" style="fill:Silver;stroke:black"><rect width="14" height="14" /></svg> parametric SAN control panel</li>
+			<li><svg width="14" height="14" style="fill:DarkGray;stroke:black"><rect width="14" height="14" /></svg> start and reference control panel</li>
 		</ul>
 		</p>
 
@@ -302,19 +308,19 @@
 			</div>
 			<div class="grid-item" id="actionDiv" style="background-color:Silver;border:solid">
 				<div>
-					<text>\(\big\| x_0 \big\|\) = </text><text id="inputReconstructionEnergyText"></text>
+					<text>\(E\) = </text><text id="inputReconstructionEnergyText"></text>
 				</div>
 				<div>
-					<text>\(\big\| x_1 \big\|\) = </text><text id="inputReconstructionLossText"></text>
+					<text>\(E_n\) = </text><text id="inputReconstructionLossText"></text>
 				</div>
 				<div>
-					<text>\(\big\| d_{x_0} \big\|\) = </text><text id="descriptionLengthText"></text>
+					<text>\(t\) = </text><text id="descriptionLengthText"></text>
 				</div>
 				<div>
-					<text>\(\big\| d_{x_1} \big\|\) = </text><text id="lossDescriptionLengthText"></text>
+					<text>\(t_n\) = </text><text id="lossDescriptionLengthText"></text>
 				</div>
 				<div>
-					<text>\(\mathcal{I}\) = </text><text id="actionText"></text>
+					<text>\(\mathcal{S}\) = </text><text id="actionText"></text>
 				</div>
 			</div>
 			<div class="grid-item" id="reconstructionDiv" style="border:solid"></div>
@@ -348,51 +354,50 @@
 					<select id="referenceFunctionSelect"></select>
 				</div>
 				<div>
-					<text>\(\big\| x_0 \big\|\) = </text><text id="referenceZeroReconstructionLossText"></text>
+					<text>\(E\) = </text><text id="referenceZeroReconstructionLossText"></text>
 				</div>
 				<div>
-					<text>\(\big\| x_1 \big\|\) = </text><text id="referenceReconstructionLossText"></text>
+					<text>\(E_n\) = </text><text id="referenceReconstructionLossText"></text>
 				</div>
 				<div>
-					<text>\(\big\| d_{x_0} \big\|\) = </text><text id="referenceDescriptionLengthText"></text>
+					<text>\(t\) = </text><text id="referenceDescriptionLengthText"></text>
 				</div>
 				<div>
-					<text>\(\big\| d_{x_1} \big\|\) = </text><text id="referenceLossDescriptionLengthText"></text>
+					<text>\(t_n\) = </text><text id="referenceLossDescriptionLengthText"></text>
 				</div>
 				<div>
-					<text>\(\mathcal{I}\) = </text><text id="referenceActionText"></text>
+					<text>\(\mathcal{S}\) = </text><text id="referenceActionText"></text>
 				</div>
 			</div>
 		</div>
 		</div>
 
 		<p>
-		We notice that sparse activations produce lower \(\mathcal{I}\).
-		Also by modifying \(T_a\) and \(T_e\) the local minima of \(\mathcal{I}\) correspond to more interpretable kernels (peaks).
+		We notice that sparse activations that adequately cover the range of \(x\) produce lower \(\mathcal{S}\) and that by modifying \(T_a\) and \(T_e\) the local minima of \(\mathcal{S}\) correspond to more interpretable kernels.
+		An easy way to demonstrate the previous is by varying the \(T_e\) slider and inspect the corresponding values of \(\mathcal{S}\).
 		</p>
 
 		<b>Discussion</b>
 
 		<p>
-		We can view \(\mathcal{I}\) as a deterministic metric of the informational content of \(x\) that is perceived by \(d_x\); the lower the value of \(\mathcal{I}\) is, the less information (or less random) it is perceived by \(d_x\).
-		\(\mathcal{I}\) could be viewed as a lossy compression metric and if viewed as an intelligence metric, it is in contrast with previous literature that assumes intelligence is lossless compression<a href="#citation-2">[2]</a>.
+		We can view \(\mathcal{S}\) as a deterministic metric of the informational content of \(x\) (observation) that is perceived by \(d\) (observer); the lower the value of \(\mathcal{S}\), the less information (or less random) is perceived by \(d\).
 		</p>
 
 		<p>
-		According to previous literature information is traditionally quantified as proportional to the degree of surprise that is contained in the data<a href="#citation-3">[3]</a>.
+		According to previous literature, information is traditionally quantified as proportional to the degree of surprise that is contained in the data<a href="#citation-3">[3]</a>.
 		However, this requires assuming the probability distribution of the data generator.
 		Kolmogorov-based information (complexity) of some data is defined as the minimal string that exactly describes it, but this is uncomputable<a href="#citation-4">[4]</a> and requires an exact description of the data.
-		Information action on the other hand, can be seen as a generalization of Kolmogorov-based information; if \(x\) is immutable then \(\big\| x \big\|\) is constant, then the problem of minimizing \(\mathcal{I}\) is uncomputable, since it is equivalent with Kolmogorov complexity.
-		Information action is also differs from the algorithmic information theory<a href="#citation-5">[5]</a>, since it does not depend on any notion of probability.
+		\(\mathcal{S}\) on the other hand, can be seen as a generalization of Kolmogorov-based information; if we consider \(x_n\) zero then \(E\) is constant, then the problem of finding general solutions for minimizing \(\mathcal{S}\) is uncomputable, since this is equivalent with computing Kolmogorov complexity.
+		\(\mathcal{S}\) also differs from algorithmic information theory<a href="#citation-5">[5]</a>, since it does not depend on any notion of probability.
 		</p>
 
 		<p>
-		Practically, the minimization of information action can be used for model selection in unsupervised problems since it does not require an exact reconstruction like the Minimum Description Language (MDL).
-		From the same point of view \(\mathcal{I}\) could also be viewed as a quantification of the bias-variance trade-off.
+		Practically, \(\mathcal{S}\) minimization can be used for model selection in unsupervised problems and does not require an exact reconstruction like the Minimum Description Length (MDL)<a href="#citation-6">[6]</a>.
+		\(\mathcal{S}\) could also be viewed as a quantification of the bias-variance trade-off.
 		</p>
 
 		<p>
-		More generally, minimization of information action could be used to help answer the question: "Why do we create and use languages?": "Because this is one way to reduce the information action of our observations.".
+		More generally, \(\mathcal{S}\) minimization could be used to answer the question: "Why do we create and use languages?": "Because languages reduce the \(\mathcal{S}\) of our observations.".
 		Observers (e.g. biological/silicon brains, sensory organs, measuring instruments) as part of their environment, do not have enough capacity to store their observations.
 		To overcome this, a part of their capacity could be used to learn and operate languages (natural, programming, mathematical, computational etc.).
 		This allows the observers to describe their observations, in order to make sense of the world and communicate.
@@ -401,11 +406,15 @@
 		Similarly, biological organisms describe concepts or thoughts to varying levels of accuracy constrained by the expressiveness of the language used within an environment.
 		In the interactive dashboard, we could view the set of kernels as the language that is learned which along with the activations create the description of the input.
 		</p>
+		
+		<p>
+		\(\mathcal{S}\) as a lossy compression metric could be viewed as an intelligence metric, which is in contrast with previous literature that assumes intelligence is lossless compression<a href="#citation-2">[2]</a>.
+		</p>
 
-		<b>Conclusions</b>
+		<b>Conclusion</b>
 
 		<p>
-		By defining information action for data and their descriptions we conclude that minimizing this quantity provides us with accurate and concise descriptions of data in the same way that physical action shows as the path that nature chose to take.
+		By defining \(\mathcal{S}\) for data and their descriptions we conclude that minimizing this quantity provides us with accurate and concise descriptions of data in the same way that action from physics shows as the path that nature chose to take.
 		</p>
 
 		<b>References</b>
@@ -415,5 +424,6 @@
 		<p id="citation-3">[3] Shannon, Claude Elwood. "A mathematical theory of communication." ACM SIGMOBILE mobile computing and communications review 5.1 (2001): 3-55.</p>
 		<p id="citation-4">[4] Li, Ming, and Paul Vitányi. An introduction to Kolmogorov complexity and its applications. Vol. 3. New York: Springer, 2008.</p>
 		<p id="citation-5">[5] Chaitin, Gregory J. "Algorithmic information theory." IBM journal of research and development 21.4 (1977): 350-359.</p>
+		<p id="citation-5">[6] Rissanen, Jorma. "A universal prior for integers and estimation by minimum description length." The Annals of statistics 11.2 (1983): 416-431.</p>
 	</body>
 </html>

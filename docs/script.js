@@ -183,7 +183,7 @@
 			referenceReconstructionLoss = 0;
 		}
 		zeroReconstructionLoss = referenceReupsampledReconstructionLossArray.dataSync()[0] * input.size;
-		referenceAction = (zeroReconstructionLoss + referenceReconstructionLoss * input.size) * (inputReconstructionDescriptionLength + input.size);
+		referenceAction = zeroReconstructionLoss * inputReconstructionDescriptionLength + referenceReconstructionLoss * input.size * input.size;
 		d3.select('#referenceActionText')
 			.text(referenceAction.toFixed(4));
 		d3.select('#referenceReconstructionLossText')
@@ -356,7 +356,7 @@
 				}
 				const inputReconstructionLoss = lossFunctionObject[lossFunctionKey](input.data, inputReconstruction);
 				const tmp = lossFunctionObject[lossFunctionKey](inputReconstruction, tf.zerosLike(inputReconstruction)).arraySync();
-				const action = (tmp * input.size + inputReconstructionLoss.arraySync() * input.size) * (inputReconstructionDescriptionLength + input.size);
+				const action = tmp * input.size * inputReconstructionDescriptionLength + inputReconstructionLoss.arraySync() * input.size * input.size;
 				d3.select('#actionText')
 					.text(action.toFixed(4));
 				d3.select('#inputReconstructionLossText')
@@ -603,7 +603,7 @@
 	inputSvg.on('mouseover', (event) => {
 		event.currentTarget.style.cursor = 'crosshair';
 		d3.select('#helpDiv')
-			.property('innerHTML', 'Input data. For all plots the x axis range is [0, n] and the y axis range [-1, 1].');
+			.property('innerHTML', 'Input data. Click and drag to change. For all plots the x axis range is [0, n] and the y axis range [-1, 1].');
 	});
 	inputSvg.on('mouseout', (event) => {
 		event.currentTarget.style.cursor = 'default';
@@ -683,7 +683,7 @@
 	ndnlSvg.append('text')
 		.attr('x', '50%')
 		.attr('y', '10%')
-		.text('ND/NL');
+		.text('t/E\u2099');
 	ndnlSvg.append('path')
 		.attr('id', 'ndnlPath')
 		.style('fill', 'none')
@@ -698,7 +698,7 @@
 		.style('stroke', reconstructionColor);
 	ndnlSvg.on('mouseover', () => {
 		d3.select('#helpDiv')
-			.property('innerHTML', 'D and L on the x and y axis respectively. Orange corresponds to SAN while cyan to reference functions for various D.');
+			.property('innerHTML', 't and E\u2099 on the x and y axis respectively normalized. Orange corresponds to SAN while cyan to reference functions for various t.');
 	});
 
 	const reconstructionSvg = d3.select('#reconstructionDiv')
@@ -723,7 +723,7 @@
 		.style('stroke', 'cyan');
 	reconstructionSvg.on('mouseover', () => {
 		d3.select('#helpDiv')
-			.property('innerHTML', 'Reconstruction of SAN. When mouse is over the cyan circles in ND/NL, the cyan plot is the reference function.');
+			.property('innerHTML', 'Reconstruction of SAN. When mouse is over the cyan circles in t/E\u2099, the cyan plot is the reference function.');
 	});
 
 	const similaritiesSvg = d3.select('#similaritiesDiv')
