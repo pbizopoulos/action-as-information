@@ -31,7 +31,7 @@
 
 		<p>
 		We define action as proportional to the energy and description length of some data.
-		We then present Sparsely Activated Networks (SANs) and an interactive parametric dashboard, that allows exploring action by modifying the input and the model configuration.
+		We then present Sparsely Activated Networks (SANs) and an interactive parametric dashboard, that allows exploring action by modifying the data and the model configuration.
 		We demonstrate the use of action as a loss function, which results in learning interpretable kernels.
 		Lastly, we argue that this definition of action can be used to quantify information and discuss how it relates with previous literature.
 		</p>
@@ -50,7 +50,7 @@
 		</p>
 
 		<p>
-		In the physical world, an object followed the one optimal path over the infinite possible paths, which can be found by minimizing the action.
+		In the physical world, an object followed the one optimal path over the infinite possible paths, which can be found by minimizing the action (i.e. principle of least/stationary action<a href="#citation-1">[1]</a>).
 		However, data can be described in many different ways, which poses the following questions:
 		<ul>
 			<li>How can we approximate the optimal description that minimizes action?</li>
@@ -62,30 +62,30 @@
 		<b>Formal definition of Action</b>
 
 		<p>
-		Let \(x \in \mathbb{R}^n\) some data and \(d \in D\) a description of \(x\), where \(D\) a description language.
-		We define action \(\mathcal{S}\) of \(x\) w.r.t. \(d\) as:
+		Let \(x \in \mathbb{R}^n\) some data and \(d_x \in D\) a description of \(x\), where \(D\) a description language.
+		We define action \(\mathcal{S}\) of \(x\) w.r.t. \(d_x\) as:
 		$$\mathcal{S} = E t$$
 		</p>
 
 		<p>
-		, where \(E = \big\| x \big\|\) and \(t = \big\| d \big\|\).
-		Calculating the former is easy, however calculating the latter heavily depends on \(d\), e.g. choosing a neural network as \(d\) we could have the following:
+		, where \(E = \big\| x \big\|\) and \(t = \big\| d_x \big\|\).
+		Calculating the former is easy, however calculating the latter heavily depends on \(d_x\), e.g. choosing a neural network as \(d_x\) we could have the following:
 		$$t = W + a + c$$
 		, where \(W\) is the number of weights, \(a\) the number of activations when fed with \(x\) and \(c\) a constant that is the description length of the neural network architecture.
 		</p>
 
 		<p>
-		Consider an additive noise term \(x_n\):
+		Consider an additive loss term \(x_n\):
 		$$x = \hat{x} + x_n$$
 		Therefore \(\mathcal{S}\) is:
-		$$\mathcal{S} = E t + E_n t_n = \big\| \hat{x} \big\| \big\| d \big\| + \big\| x_n \big\| \big\| d_n \big\|$$
-		,where \(d\) is a candidate description for \(x\), \(E_n\) the loss term and \(t_n\) the description length of \(x_n\) which could be considered as equal to the length of \(x\) in the worst case.
+		$$\mathcal{S} = E t + E_n t_n = \big\| \hat{x} \big\| \big\| d_{\hat{x}} \big\| + \big\| x_n \big\| \big\| d_{x_n} \big\|$$
+		,where \(d_{\hat{x}}\) is a candidate description for \(x\), \(E_n\) the energy of the loss term and \(t_n\) the description length of \(x_n\) which could be considered as equal to the length of \(x\) in the worst case.
 		</p>
 
 		<b>Sparsely Activated Networks</b>
 
 		<p>
-		We present Sparsely Activated Networks (SANs)<a href="#citation-1">[1]</a> in order to use them as \(d\).
+		We present Sparsely Activated Networks (SANs)<a href="#citation-2">[2]</a> in order to use them as \(d_x\).
 		The reason we use SANs is that it easily allows us modify \(t\) during training with the following operators (either individually or in combination):
 		<ul>
 			<li>\(T_a(x, c)\): Amplitude threshold function</li>
@@ -121,7 +121,7 @@
 		<b>Interactive parametric dashboard</b>
 
 		<p>
-		Here we demonstrate the calculation of \(\mathcal{S}\) of motif-based time-series w.r.t. SANs as \(d\).
+		Here we demonstrate the calculation of \(\mathcal{S}\) of motif-based time-series w.r.t. SANs as \(d_x\).
 		The dashboard consists of four types of blocks indicated by the background color:
 		<ul>
 			<li><svg width="14" height="14" style="fill:white;stroke:black"><rect width="14" height="14" /></svg> SAN architecture with data flow</li>
@@ -380,7 +380,7 @@
 		<b>Discussion</b>
 
 		<p>
-		We can view \(\mathcal{S}\) as a deterministic metric of the informational content of \(x\) (observation) that is perceived by \(d\) (observer); the lower the value of \(\mathcal{S}\), the less information (or less random) is perceived by \(d\).
+		We can view \(\mathcal{S}\) as a deterministic metric of the informational content of \(x\) (observation) that is perceived by \(d_{\hat{x}}\) (observer); the lower the value of \(\mathcal{S}\), the less information (or less random) is perceived by \(d_{\hat{x}}\).
 		</p>
 
 		<p>
@@ -388,12 +388,12 @@
 		However, this requires assuming the probability distribution of the data generator.
 		Kolmogorov-based information (complexity) of some data is defined as the minimal string that exactly describes it, but this is uncomputable<a href="#citation-4">[4]</a> and requires an exact description of the data.
 		\(\mathcal{S}\) on the other hand, can be seen as a generalization of Kolmogorov-based information; if we consider \(x_n\) zero then \(E\) is constant, then the problem of finding general solutions for minimizing \(\mathcal{S}\) is uncomputable, since this is equivalent with computing Kolmogorov complexity.
-		\(\mathcal{S}\) also differs from algorithmic information theory<a href="#citation-5">[5]</a>, since it does not depend on any notion of probability.
+		\(\mathcal{S}\) also differs from algorithmic information theory<a href="#citation-5">[5]</a>, since it does not depend on the concept of probability.
 		</p>
 
 		<p>
 		Practically, \(\mathcal{S}\) minimization can be used for model selection in unsupervised problems and does not require an exact reconstruction like the Minimum Description Length (MDL)<a href="#citation-6">[6]</a>.
-		\(\mathcal{S}\) could also be viewed as a quantification of the bias-variance trade-off.
+		From the same point of view, \(\mathcal{S}\) could be used as a quantification of the bias-variance trade-off.
 		</p>
 
 		<p>
@@ -404,26 +404,27 @@
 		However, this conciseness that languages provide comes with the cost of decreased accuracy.
 		For example, the brain internally reconstructs (describes) sensory observations with accuracy constrained by the physiology of each sensory organ (e.g. the human eye cant distinguish objects less than a tenth of a millimeter).
 		Similarly, biological organisms describe concepts or thoughts to varying levels of accuracy constrained by the expressiveness of the language used within an environment.
-		In the interactive dashboard, we could view the set of kernels as the language that is learned which along with the activations create the description of the input.
+		In the interactive dashboard, we could view the set of kernels as a generated language, which along with the activations consist of the description of the data.
 		</p>
 		
 		<p>
-		\(\mathcal{S}\) as a lossy compression metric could be viewed as an intelligence metric, which is in contrast with previous literature that assumes intelligence is lossless compression<a href="#citation-2">[2]</a>.
+		Lastly, \(\mathcal{S}\) is a lossy compression metric and could be viewed as an intelligence metric, which is in contrast with previous literature that assumes intelligence is lossless compression<a href="#citation-7">[7]</a>.
 		</p>
 
 		<b>Conclusion</b>
 
 		<p>
-		By defining \(\mathcal{S}\) for data and their descriptions we conclude that minimizing this quantity provides us with accurate and concise descriptions of data in the same way that action from physics shows as the path that nature chose to take.
+		By defining \(\mathcal{S}\) for data and their descriptions we conclude that minimizing \(\mathcal{S}\) provides us with accurate and concise descriptions of data in the same way that action from physics shows as the path that nature chose to take.
 		</p>
 
 		<b>References</b>
 
-		<p id="citation-1">[1] Bizopoulos, Paschalis, and Dimitrios Koutsouris. "Sparsely activated networks." IEEE Transactions on Neural Networks and Learning Systems 32.3 (2020): 1304-1313.</p>
-		<p id="citation-2">[2] Hutter, Marcus. "The human knowledge compression contest." URL http://prize. hutter1. net 6 (2012).</p>
+		<p id="citation-1">[1] Siburg, Karl Friedrich. The principle of least action in geometry and dynamics. No. 1844. Springer Science & Business Media, 2004.</p>
+		<p id="citation-2">[2] Bizopoulos, Paschalis, and Dimitrios Koutsouris. "Sparsely activated networks." IEEE Transactions on Neural Networks and Learning Systems 32.3 (2020): 1304-1313.</p>
 		<p id="citation-3">[3] Shannon, Claude Elwood. "A mathematical theory of communication." ACM SIGMOBILE mobile computing and communications review 5.1 (2001): 3-55.</p>
 		<p id="citation-4">[4] Li, Ming, and Paul Vitányi. An introduction to Kolmogorov complexity and its applications. Vol. 3. New York: Springer, 2008.</p>
 		<p id="citation-5">[5] Chaitin, Gregory J. "Algorithmic information theory." IBM journal of research and development 21.4 (1977): 350-359.</p>
-		<p id="citation-5">[6] Rissanen, Jorma. "A universal prior for integers and estimation by minimum description length." The Annals of statistics 11.2 (1983): 416-431.</p>
+		<p id="citation-6">[6] Rissanen, Jorma. "A universal prior for integers and estimation by minimum description length." The Annals of statistics 11.2 (1983): 416-431.</p>
+		<p id="citation-7">[7] Hutter, Marcus. "The human knowledge compression contest." URL http://prize. hutter1. net 6 (2012).</p>
 	</body>
 </html>
