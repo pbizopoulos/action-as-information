@@ -65,22 +65,20 @@
 		<p>
 		Let \(x \in \mathbb{R}^n\) some data and \(d_x \in D\) a description of \(x\), where \(D\) a description language.
 		We define action \(\mathcal{S}\) of \(x\) w.r.t. \(d_x\) as:
-		$$\mathcal{S} = E t$$
+		$$\mathcal{S} = \big\| x \big\| \big\| d_x \big\|$$
 		</p>
 
 		<p>
-		, where \(E = \big\| x \big\|\) and \(t = \big\| d_x \big\|\).
-		Calculating the former is easy, however calculating the latter heavily depends on \(d_x\), e.g. choosing a neural network as \(d_x\) we could have the following:
+		, where \(\big\| \cdot \big\|\) denotes the norm.
+		Calculating \(\big\| x \big\|\) is straightforward, however calculating \(\big\| d_x \big\|\) heavily depends on \(d_x\), e.g. choosing a neural network as \(d_x\) we could have the following:
 		$$t = W + a + c$$
 		, where \(W\) is the number of weights, \(a\) the number of activations when fed with \(x\) and \(c\) a constant that is the description length of the neural network architecture.
 		</p>
 
 		<p>
-		Targeting \(\mathcal{S}\) minimization, we could consider an additive loss term \(x_n\):
-		$$x = \hat{x} + x_n$$
-		Therefore \(\mathcal{S}\) is:
-		$$\mathcal{S} = E t + E_n t_n = \big\| \hat{x} \big\| \big\| d_{\hat{x}} \big\| + \big\| x_n \big\| \big\| d_{x_n} \big\|$$
-		,where \(d_{\hat{x}}\) is a candidate description for \(x\), \(E_n\) the energy of the loss term and \(t_n\) the description length of \(x_n\) which could be considered as equal to the length of \(x\) in the worst case.
+		Targeting \(\mathcal{S}\) minimization, we could consider a loss term \(x_n\), therefore \(\mathcal{S}\) becomes:
+		$$\mathcal{S} = \big\| \hat{x} \big\| \big\| d_{\hat{x}} \big\| + \big\| x_n \big\| \big\| d_{x_n} \big\|$$
+		,where \(\hat{x}\) is the approximation of \(x\), \(d_{\hat{x}}\) is a candidate description for \(x\), \(\big\| x_n \big\|\) the energy of the loss term and \(\big\| d_{x_n} \big\|\) the description length of \(x_n\) which could be considered as equal to the length of \(x\) in the worst case.
 		This formulation allows us to trade description length with energy and get closer to the \(\mathcal{S}\) minima.
 		</p>
 
@@ -310,16 +308,16 @@
 			</div>
 			<div class="grid-item" id="actionDiv" style="background-color:Silver;border:solid">
 				<div>
-					<text>\(E\) = </text><text id="inputReconstructionEnergyText"></text>
+					<text>\(\big\| \hat{x} \big\|\) = </text><text id="inputReconstructionEnergyText"></text>
 				</div>
 				<div>
-					<text>\(E_n\) = </text><text id="inputReconstructionLossText"></text>
+					<text>\(\big\| x_n \big\|\) = </text><text id="inputReconstructionLossText"></text>
 				</div>
 				<div>
-					<text>\(t\) = </text><text id="descriptionLengthText"></text>
+					<text>\(\big\| d_{\hat{x}} \big\|\) = </text><text id="descriptionLengthText"></text>
 				</div>
 				<div>
-					<text>\(t_n\) = </text><text id="lossDescriptionLengthText"></text>
+					<text>\(\big\| d_{x_n} \big\|\) = </text><text id="lossDescriptionLengthText"></text>
 				</div>
 				<div>
 					<text>\(\mathcal{S}\) = </text><text id="actionText"></text>
@@ -356,16 +354,16 @@
 					<select id="referenceFunctionSelect"></select>
 				</div>
 				<div>
-					<text>\(E\) = </text><text id="referenceZeroReconstructionLossText"></text>
+					<text>\(\big\| \hat{x} \big\|\) = </text><text id="referenceZeroReconstructionLossText"></text>
 				</div>
 				<div>
-					<text>\(E_n\) = </text><text id="referenceReconstructionLossText"></text>
+					<text>\(\big\| x_n \big\|\) = </text><text id="referenceReconstructionLossText"></text>
 				</div>
 				<div>
-					<text>\(t\) = </text><text id="referenceDescriptionLengthText"></text>
+					<text>\(\big\| d_{\hat{x}} \big\|\) = </text><text id="referenceDescriptionLengthText"></text>
 				</div>
 				<div>
-					<text>\(t_n\) = </text><text id="referenceLossDescriptionLengthText"></text>
+					<text>\(\big\| d_{x_n} \big\|\) = </text><text id="referenceLossDescriptionLengthText"></text>
 				</div>
 				<div>
 					<text>\(\mathcal{S}\) = </text><text id="referenceActionText"></text>
@@ -389,7 +387,7 @@
 		According to previous literature, information is traditionally quantified as proportional to the degree of surprise that is contained in the data<a href="#citation-3">[3]</a>.
 		However, this requires assuming the probability distribution of the data generator.
 		Kolmogorov-based information (complexity) of some data is defined as the minimal string that exactly describes it, but this is uncomputable<a href="#citation-4">[4]</a> and requires an exact description of the data.
-		\(\mathcal{S}\) on the other hand, can be seen as a generalization of Kolmogorov-based information; if we consider \(x_n\) zero then \(E\) is constant, then the problem of finding general solutions for minimizing \(\mathcal{S}\) is uncomputable, since this is equivalent with computing Kolmogorov complexity.
+		\(\mathcal{S}\) on the other hand, can be seen as a generalization of Kolmogorov-based information; if we consider \(x_n\) zero then \(\big\| \hat{x} \big\|\) is constant, then the problem of finding general solutions for minimizing \(\mathcal{S}\) is uncomputable, since this is equivalent with computing Kolmogorov complexity.
 		\(\mathcal{S}\) also differs from algorithmic information theory<a href="#citation-5">[5]</a>, since it does not depend on the concept of probability.
 		</p>
 
