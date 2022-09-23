@@ -76,7 +76,9 @@
 		</p>
 
 		<p>
-		Targeting \(\mathcal{S}\) minimization, we could consider a loss term \(x_n\), therefore \(\mathcal{S}\) becomes:
+		We then consider an additive loss term \(x_n\) with a corresponding description \(d_{x_n}\):
+		$$x = \hat{x} + x_n$$
+		Then \(\mathcal{S}\) becomes:
 		$$\mathcal{S} = \big\| \hat{x} \big\| \big\| d_{\hat{x}} \big\| + \big\| x_n \big\| \big\| d_{x_n} \big\|$$
 		,where \(\hat{x}\) is the approximation of \(x\), \(d_{\hat{x}}\) is a candidate description for \(x\), \(\big\| x_n \big\|\) the energy of the loss term and \(\big\| d_{x_n} \big\|\) the description length of \(x_n\) which could be considered as equal to the length of \(x\) in the worst case.
 		This formulation allows us to trade description length with energy and get closer to the \(\mathcal{S}\) minima.
