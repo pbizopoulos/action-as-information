@@ -680,10 +680,6 @@
 	const ndnlSvg = d3.select('#ndnlDiv')
 		.append('svg')
 		.attr('viewBox', [0, 0, width, height]);
-	ndnlSvg.append('text')
-		.attr('x', '50%')
-		.attr('y', '10%')
-		.text('t/E\u2099');
 	ndnlSvg.append('path')
 		.attr('id', 'ndnlPath')
 		.style('fill', 'none')
@@ -698,7 +694,7 @@
 		.style('stroke', reconstructionColor);
 	ndnlSvg.on('mouseover', () => {
 		d3.select('#helpDiv')
-			.property('innerHTML', 't and E\u2099 on the x and y axis respectively normalized. Orange corresponds to SAN while cyan to reference functions for various t.');
+			.property('innerHTML', '||d<sub>0->x\u0302</sub>|| and ||x - x\u0302|| on the x and y axis respectively normalized. Orange corresponds to SAN while cyan to reference functions for various t.');
 	});
 
 	const reconstructionSvg = d3.select('#reconstructionDiv')
@@ -723,7 +719,7 @@
 		.style('stroke', 'cyan');
 	reconstructionSvg.on('mouseover', () => {
 		d3.select('#helpDiv')
-			.property('innerHTML', 'Reconstruction of SAN. When mouse is over the cyan circles in t/E\u2099, the cyan plot is the reference function.');
+			.property('innerHTML', 'Reconstruction of SAN. When mouse is over the cyan circles in the ||d<sub>0->x\u0302</sub>||, ||x - x\u0302|| diagram, the cyan plot is the reference function.');
 	});
 
 	const similaritiesSvg = d3.select('#similaritiesDiv')

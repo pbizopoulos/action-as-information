@@ -40,7 +40,7 @@
 
 		<p>
 		Action is a functional that receives the history of a system as input and outputs a number.
-		In physics, the defining property of action is that it is minimized for the history that nature chose to follow (e.g. the specific path that an object followed when left under the influence of gravity).
+		In physics, the defining property of action is that it is minimized for the history that nature chose to follow (e.g. the specific path that an object followed when a force is applied to it).
 		</p>
 
 		<p>
@@ -51,10 +51,10 @@
 
 		<p>
 		In the physical world, an object followed the one optimal path over the infinite possible paths, which can be found by minimizing the action (i.e. principle of least/stationary action<a href="#citation-1">[1]</a>).
-		However, data have multiple descriptions, which poses the following questions:
+		However data have multiple descriptions, which poses the following questions:
 		<ul>
-			<li>Is there an optimal description? If yes then, how can we approximate it?</li>
-			<li>How can we interpret the value of the action?</li>
+			<li>Is there an optimal description for some data? If yes then, how can we approximate it?</li>
+			<li>What does the value of the action mean?</li>
 		</ul>
 		We argue that the optimal description is the one that minimizes action, and here we will try to approximate it using Sparsely Activated Networks.
 		Then, we argue that action is the quantity of information of the data that is 'perceived' by the description (viewed as an observer).
@@ -63,32 +63,30 @@
 		<b>Formal definition of Action</b>
 
 		<p>
-		Let \(x \in \mathbb{R}^n\) some data and \(d_x \in D\) a description of \(x\), where \(D\) a description language.
-		We define action \(\mathcal{S}\) of \(x\) w.r.t. \(d_x\) as:
-		$$\mathcal{S} = \big\| x \big\| \big\| d_x \big\|$$
+		Let \(x \in \mathbb{R}^n\) some data and \(d_{0 \rightarrow x} \in D\) a description of the traversal from \(0\) to \(x\), where \(D\) a description language.
+		We define action \(\mathcal{S}\) of \(x\) w.r.t. \(d_{0 \rightarrow x}\) as:
+		$$\mathcal{S} = \big\| x \big\| \big\| d_{0 \rightarrow x} \big\|$$
 		</p>
 
 		<p>
 		, where \(\big\| \cdot \big\|\) denotes the norm.
-		Calculating \(\big\| x \big\|\) is straightforward, however calculating \(\big\| d_x \big\|\) heavily depends on \(d_x\), e.g. choosing a neural network as \(d_x\) we could have the following:
-		$$t = W + a + c$$
+		Calculating \(\big\| x \big\|\) is straightforward, however calculating \(\big\| d_{0 \rightarrow x} \big\|\) heavily depends on \(d_{0 \rightarrow x}\), e.g. choosing a neural network as \(d_{0 \rightarrow x}\) we could have the following:
+		$$d_{0 \rightarrow x} = W + a + c$$
 		, where \(W\) is the number of weights, \(a\) the number of activations when fed with \(x\) and \(c\) a constant that is the description length of the neural network architecture.
 		</p>
 
 		<p>
-		We then consider an additive loss term \(x_n\) with a corresponding description \(d_{x_n}\):
-		$$x = \hat{x} + x_n$$
-		Then \(\mathcal{S}\) becomes:
-		$$\mathcal{S} = \big\| \hat{x} \big\| \big\| d_{\hat{x}} \big\| + \big\| x_n \big\| \big\| d_{x_n} \big\|$$
-		,where \(\hat{x}\) is the approximation of \(x\), \(d_{\hat{x}}\) is a candidate description for \(x\), \(\big\| x_n \big\|\) the energy of the loss term and \(\big\| d_{x_n} \big\|\) the description length of \(x_n\) which could be considered as equal to the length of \(x\) in the worst case.
-		This formulation allows us to trade description length with energy and get closer to the \(\mathcal{S}\) minima.
+		We then consider \(\hat{x}\) an approximation of \(x\), then \(\mathcal{S}\) becomes:
+		$$\mathcal{S} = \big\| \hat{x} \big\| \big\| d_{0 \rightarrow \hat{x}} \big\| + \big\| x - \hat{x} \big\| \big\| d_{\hat{x} \rightarrow x} \big\|$$
+		,where \(d_{0 \rightarrow \hat{x}}\) is a candidate description for \(x\), \(\big\| x - \hat{x} \big\|\) the energy of the loss and \(\big\| d_{\hat{x} \rightarrow x} \big\|\) the description length of loss which could be considered as equal to the length of \(x\) in the worst case.
+		This formulation allows us to trade description length with energy and get closer to the minima of \(\mathcal{S}\).
 		</p>
 
 		<b>Sparsely Activated Networks</b>
 
 		<p>
-		We present Sparsely Activated Networks (SANs)<a href="#citation-2">[2]</a> in order to use them as \(d_x\).
-		The reason we use SANs is that it easily allows us modify \(t\) during training with the following operators (either individually or in combination):
+		We present Sparsely Activated Networks (SANs)<a href="#citation-2">[2]</a> in order to use them as \(d_{0 \rightarrow \hat{x}}\).
+		The reason we use SANs is that it easily allows us modify \(\big\| d_{0 \rightarrow \hat{x}} \big\|\) during training with the following operators (either individually or in combination):
 		<ul>
 			<li>\(T_a(x, c)\): Amplitude threshold function</li>
 			<li>\(\phi\): Activation function</li>
@@ -115,15 +113,15 @@
 		</p>
 
 		<p>
-		Calculating \(t\) from the previous:
-		$$t = \max\bigg((\dim(x) + 1)\sum_{i=1}^m{\big\|\alpha_i\big\|_0}, n\bigg) + \sum_{i=1}^m{k_i}$$
+		We can finally calculate \(\big\| d_{0 \rightarrow \hat{x}} \big\|\) from the previous:
+		$$\big\| d_{0 \rightarrow \hat{x}} \big\| = \max\bigg((\dim(x) + 1)\sum_{i=1}^m{\big\|\alpha_i\big\|_0}, n\bigg) + \sum_{i=1}^m{k_i}$$
 		, where \(\dim\) denotes dimensionality, \(\max\) the maximum function and we omit the neural network architecture constant \(c\) as it does not change within our experiment.
 		</p>
 
 		<b>Interactive parametric dashboard</b>
 
 		<p>
-		Here we demonstrate the calculation of \(\mathcal{S}\) of motif-based time-series w.r.t. SANs as \(d_x\).
+		Here we demonstrate the calculation of \(\mathcal{S}\) of motif-based time-series w.r.t. SANs as \(d_{0 \rightarrow \hat{x}}\).
 		The dashboard consists of four types of blocks indicated by the background color:
 		<ul>
 			<li><svg width="14" height="14" style="fill:white;stroke:black"><rect width="14" height="14" /></svg> SAN architecture with data flow</li>
@@ -313,13 +311,13 @@
 					<text>\(\big\| \hat{x} \big\|\) = </text><text id="inputReconstructionEnergyText"></text>
 				</div>
 				<div>
-					<text>\(\big\| x_n \big\|\) = </text><text id="inputReconstructionLossText"></text>
+					<text>\(\big\| x - \hat{x} \big\|\) = </text><text id="inputReconstructionLossText"></text>
 				</div>
 				<div>
-					<text>\(\big\| d_{\hat{x}} \big\|\) = </text><text id="descriptionLengthText"></text>
+					<text>\(\big\| d_{0 \rightarrow \hat{x}} \big\|\) = </text><text id="descriptionLengthText"></text>
 				</div>
 				<div>
-					<text>\(\big\| d_{x_n} \big\|\) = </text><text id="lossDescriptionLengthText"></text>
+					<text>\(\big\| d_{\hat{x} \rightarrow x} \big\|\) = </text><text id="lossDescriptionLengthText"></text>
 				</div>
 				<div>
 					<text>\(\mathcal{S}\) = </text><text id="actionText"></text>
@@ -359,13 +357,13 @@
 					<text>\(\big\| \hat{x} \big\|\) = </text><text id="referenceZeroReconstructionLossText"></text>
 				</div>
 				<div>
-					<text>\(\big\| x_n \big\|\) = </text><text id="referenceReconstructionLossText"></text>
+					<text>\(\big\| x - \hat{x} \big\|\) = </text><text id="referenceReconstructionLossText"></text>
 				</div>
 				<div>
-					<text>\(\big\| d_{\hat{x}} \big\|\) = </text><text id="referenceDescriptionLengthText"></text>
+					<text>\(\big\| d_{0 \rightarrow \hat{x}} \big\|\) = </text><text id="referenceDescriptionLengthText"></text>
 				</div>
 				<div>
-					<text>\(\big\| d_{x_n} \big\|\) = </text><text id="referenceLossDescriptionLengthText"></text>
+					<text>\(\big\| d_{\hat{x} \rightarrow x} \big\|\) = </text><text id="referenceLossDescriptionLengthText"></text>
 				</div>
 				<div>
 					<text>\(\mathcal{S}\) = </text><text id="referenceActionText"></text>
@@ -382,14 +380,14 @@
 		<b>Discussion</b>
 
 		<p>
-		We can view \(\mathcal{S}\) as a deterministic metric of the informational content of \(x\) (observation) that is perceived by \(d_{\hat{x}}\) (observer); the lower the value of \(\mathcal{S}\), the less information (or less random) is perceived by \(d_{\hat{x}}\).
+		We can view \(\mathcal{S}\) as a deterministic metric of the informational content of \(x\) (observation) that is perceived by \(d_{0 \rightarrow \hat{x}}\) (observer); the lower the value of \(\mathcal{S}\), the less information (or less random) is perceived by \(d_{0 \rightarrow \hat{x}}\).
 		</p>
 
 		<p>
 		According to previous literature, information is traditionally quantified as proportional to the degree of surprise that is contained in the data<a href="#citation-3">[3]</a>.
 		However, this requires assuming the probability distribution of the data generator.
 		Kolmogorov-based information (complexity) of some data is defined as the minimal string that exactly describes it, but this is uncomputable<a href="#citation-4">[4]</a> and requires an exact description of the data.
-		\(\mathcal{S}\) on the other hand, can be seen as a generalization of Kolmogorov-based information; if we consider \(x_n\) zero then \(\big\| \hat{x} \big\|\) is constant, then the problem of finding general solutions for minimizing \(\mathcal{S}\) is uncomputable, since this is equivalent with computing Kolmogorov complexity.
+		\(\mathcal{S}\) on the other hand, can be seen as a generalization of Kolmogorov-based information; if we consider \(\hat{x} = x\), then the problem of finding general solutions for minimizing \(\mathcal{S}\) is uncomputable, since this is equivalent with computing Kolmogorov complexity.
 		\(\mathcal{S}\) also differs from algorithmic information theory<a href="#citation-5">[5]</a>, since it does not depend on the concept of probability.
 		</p>
 
@@ -404,7 +402,7 @@
 		To overcome this, a part of their capacity could be used to learn and operate languages (natural, programming, mathematical, computational etc.).
 		This allows the observers to describe their observations, in order to make sense of the world and communicate.
 		However, this conciseness that languages provide comes with the cost of decreased accuracy.
-		For example, the brain internally reconstructs (describes) sensory observations with accuracy constrained by the physiology of each sensory organ (e.g. the human eye cant distinguish objects less than a tenth of a millimeter).
+		For example, the brain internally reconstructs (describes) sensory observations with accuracy constrained by the physiology of each sensory organ (e.g. the human eye cannot distinguish objects less than a tenth of a millimeter).
 		Similarly, biological organisms describe concepts or thoughts to varying levels of accuracy constrained by the expressiveness of the language used within an environment.
 		In the interactive dashboard, we could view the set of kernels as a generated language, which along with the activations consist of the description of the data.
 		</p>
