@@ -45,7 +45,7 @@
 
 		<p>
 		The system for which we will define action is data (e.g. a set of numbers such as vectors) and the history is the description of their change; how they 'traversed' from their initial to their final values.
-		The dimensions of action is energy &times; time, however in our definition we use description length as a hardware-independent measure of time.
+		Action has dimensions of energy &times; time, however in our definition we use description length as a hardware-independent measure of time.
 		In other words, action is proportional to the quantity (energy) and duration (description length) of the change of the data.
 		</p>
 
@@ -76,9 +76,9 @@
 		</p>
 
 		<p>
-		We then consider \(\hat{x}\) an approximation of \(x\), then \(\mathcal{S}\) becomes:
+		Let \(\hat{x}\) an approximation of \(x\), then \(\mathcal{S}\) becomes:
 		$$\mathcal{S} = \big\| \hat{x} \big\| \big\| d_{0 \rightarrow \hat{x}} \big\| + \big\| x - \hat{x} \big\| \big\| d_{\hat{x} \rightarrow x} \big\|$$
-		,where \(d_{0 \rightarrow \hat{x}}\) is a candidate description for \(x\), \(\big\| x - \hat{x} \big\|\) the energy of the loss and \(\big\| d_{\hat{x} \rightarrow x} \big\|\) the description length of loss which could be considered as equal to the length of \(x\) in the worst case.
+		,where \(d_{0 \rightarrow \hat{x}}\) is the description for \(\hat{x}\), \(\big\| x - \hat{x} \big\|\) the energy of the loss and \(\big\| d_{\hat{x} \rightarrow x} \big\|\) the description length of the loss which could be considered as equal to the length of \(x\) in the worst case.
 		This formulation allows us to trade description length with energy and get closer to the minima of \(\mathcal{S}\).
 		</p>
 
@@ -102,8 +102,7 @@
 
 		<p>
 		\(w_i\) are learnt by backpropagating the loss \(L\) w.r.t. to \(w_i\):
-		$$\nabla L = \bigg(\frac{\partial L}{\partial w_1},...,\frac{\partial L}{\partial w_m}\bigg)$$
-		$$\Delta w_i \leftarrow -\lambda\frac{\partial L}{\partial w_i}$$
+		$$\Delta w_i = -\lambda\frac{\partial L}{\partial w_i}$$
 		, where \(\lambda\) is the learning rate.
 		</p>
 
@@ -386,8 +385,8 @@
 		<p>
 		According to previous literature, information is traditionally quantified as proportional to the degree of surprise that is contained in the data<a href="#citation-3">[3]</a>.
 		However, this requires assuming the probability distribution of the data generator.
-		Kolmogorov-based information (complexity) of some data is defined as the minimal string that exactly describes it, but this is uncomputable<a href="#citation-4">[4]</a> and requires an exact description of the data.
-		\(\mathcal{S}\) on the other hand, can be seen as a generalization of Kolmogorov-based information; if we consider \(\hat{x} = x\), then the problem of finding general solutions for minimizing \(\mathcal{S}\) is uncomputable, since this is equivalent with computing Kolmogorov complexity.
+		Kolmogorov-based information (complexity) of some data is defined as the minimum description length, but this is uncomputable<a href="#citation-4">[4]</a> and requires an exact description of the data.
+		\(\mathcal{S}\) can be seen as a generalization of Kolmogorov-based information; if we consider \(\hat{x} = x\), then the general problem of minimizing \(\mathcal{S}\) is equivalent with computing Kolmogorov complexity.
 		\(\mathcal{S}\) also differs from algorithmic information theory<a href="#citation-5">[5]</a>, since it does not depend on the concept of probability.
 		</p>
 
