@@ -1,3 +1,15 @@
+#neuronControlDiv1, #neuronControlDiv2, #neuronControlDiv3, #lossControlDiv, #activationFunctionControlDiv, #actionDiv {
+	background-color:Silver;
+}
+
+#inputControlDiv1, #inputControlDiv2, #inputControlDiv3, #inputControlDiv4, #inputControlDiv5 {
+	background-color:Gainsboro;
+}
+
+#startPauseResetControlDiv, #referenceControlDiv {
+	background-color:DarkGray;
+}
+
 .grid-container {
 	width: 1050px;
 	height: 600px;
@@ -16,6 +28,34 @@
 	stroke: black;
 	fill: white;
 	r: 15px;
+}
+
+.annotationSvg {
+	stroke:black;
+}
+
+.border-solid {
+	border:solid;
+}
+
+.fill-white {
+	fill:white;
+}
+
+.fill-gainsboro {
+	fill:gainsboro;
+}
+
+.fill-silver {
+	fill:silver;
+}
+
+.fill-darkgray {
+	fill:darkgray;
+}
+
+.visibility-hidden {
+	visibility:hidden;
 }
 
 text {

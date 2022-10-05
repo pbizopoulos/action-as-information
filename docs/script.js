@@ -836,7 +836,7 @@
 				.style('visibility', visibility);
 			d3.select('#inputControlDiv5')
 				.style('visibility', visibility);
-			d3.select('#neurolControlDiv1')
+			d3.select('#neuronControlDiv1')
 				.style('visibility', visibility);
 			d3.select('#neuronControlDiv2')
 				.style('visibility', visibility);
@@ -1641,14 +1641,14 @@
 
 	d3.select('#startPauseButton')
 		.on('click', (event) => {
-			if (event.currentTarget.value == 'start') {
+			if (event.currentTarget.textContent == 'start') {
 				if (neuronArray.every((v) => { return v.use === false; })) {
 					return;
 				}
-				event.currentTarget.value = 'pause';
+				event.currentTarget.textContent = 'pause';
 				interval = setInterval(() => { console.log(tf.memory()); train(); }, 0);
 			} else {
-				event.currentTarget.value = 'start';
+				event.currentTarget.textContent = 'start';
 				clearInterval(interval);
 			}
 		});
@@ -1663,7 +1663,7 @@
 			d3.select('#exampleSelect')
 				.dispatch('change');
 			d3.select('#startPauseButton')
-				.attr('value', 'start');
+				.attr('textContent', 'start');
 			clearInterval(interval);
 		});
 	d3.select('#stopButton')

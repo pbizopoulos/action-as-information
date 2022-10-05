@@ -52,10 +52,12 @@
 		<p>
 		In the physical world, an object followed the one optimal path over the infinite possible paths, which can be found by minimizing the action (i.e. principle of least/stationary action<a href="#citation-1">[1]</a>).
 		However data have multiple descriptions, which poses the following questions:
+		</p>
 		<ul>
 			<li>Is there an optimal description for some data? If yes then, how can we approximate it?</li>
 			<li>What does the value of the action mean?</li>
 		</ul>
+		<p>
 		We argue that the optimal description is the one that minimizes action, and here we will try to approximate it using Sparsely Activated Networks.
 		Then, we argue that action is the quantity of information of the data that is 'perceived' by the description (viewed as an observer).
 		</p>
@@ -87,12 +89,12 @@
 		<p>
 		We present Sparsely Activated Networks (SANs)<a href="#citation-2">[2]</a> in order to use them as \(d_{0 \rightarrow \hat{x}}\).
 		The reason we use SANs is that it easily allows us modify \(\big\| d_{0 \rightarrow \hat{x}} \big\|\) during training with the following operators (either individually or in combination):
+		</p>
 		<ul>
 			<li>\(T_a(x, c)\): Amplitude threshold function</li>
 			<li>\(\phi\): Activation function</li>
 			<li>\(T_e(x, c)\): Minimum distance threshold function</li>
 		</ul>
-		</p>
 
 		<p>
 		During training, we calculate \(\hat{x}\) as follows:
@@ -122,27 +124,26 @@
 		<p>
 		Here we demonstrate the calculation of \(\mathcal{S}\) of motif-based time-series w.r.t. SANs as \(d_{0 \rightarrow \hat{x}}\).
 		The dashboard consists of four types of blocks indicated by the background color:
-		<ul>
-			<li><svg width="14" height="14" style="fill:white;stroke:black"><rect width="14" height="14" /></svg> SAN architecture with data flow</li>
-			<li><svg width="14" height="14" style="fill:Gainsboro;stroke:black"><rect width="14" height="14" /></svg> parametric input control panel</li>
-			<li><svg width="14" height="14" style="fill:Silver;stroke:black"><rect width="14" height="14" /></svg> parametric SAN control panel</li>
-			<li><svg width="14" height="14" style="fill:DarkGray;stroke:black"><rect width="14" height="14" /></svg> start and reference control panel</li>
-		</ul>
 		</p>
+		<ul>
+			<li><svg class="annotationSvg fill-white" width="14" height="14"><rect width="14" height="14" /></svg> SAN architecture with data flow</li>
+			<li><svg class="annotationSvg fill-gainsboro" width="14" height="14"><rect width="14" height="14" /></svg> parametric input control panel</li>
+			<li><svg class="annotationSvg fill-silver" width="14" height="14"><rect width="14" height="14" /></svg> parametric SAN control panel</li>
+			<li><svg class="annotationSvg fill-darkgray" width="14" height="14"><rect width="14" height="14" /></svg> start and reference control panel</li>
+		</ul>
 
 		<div class="grid-container" id="gridContainerDiv">
-			<div class="grid-item" id="inputControlDiv1" style="background-color:Gainsboro;border:solid;visibility:hidden;">
+			<div class="border-solid grid-item visibility-hidden" id="inputControlDiv1">
 				<div>
-					<text>\(n\) = </text>
-					<text id="sizeText"></text>
+					<span>\(n\) = </span><span id="sizeText"></span>
 					<input id="sizeInputRange" max="100" min="2" type="range">
 				</div>
 				<div>
-					<text id="velocityText"></text>
+					<div id="velocityText"></div>
 					<input id="velocityInputRange" max="20" min="0" type="range">
 				</div>
 			</div>
-			<div class="grid-item" id="inputControlDiv2" style="background-color:Gainsboro;border:solid;visibility:hidden;">
+			<div class="border-solid grid-item visibility-hidden" id="inputControlDiv2">
 				<div>
 					<input id="channelUseInputCheckbox" type="checkbox">
 					<svg height="14" id="inputChannelMotifColoredBoxSvg" width="14">
@@ -151,58 +152,56 @@
 					<select id="inputChannelIndexSelect"></select>
 				</div>
 				<div>
-					<text>type: </text>
-					<select id="inputChannelMotifTypeSelect"></select>
+					<span>type: </span><select id="inputChannelMotifTypeSelect"></select>
 				</div>
 				<div>
-					<text id="channelMotifSizeText"></text>
+					<div id="channelMotifSizeText"></div>
 					<input type="range" id="channelMotifSizeInputRange" min="1" max="100">
 				</div>
 				<div>
-					<text id="channelAmplitudeBaseText"></text>
+					<div id="channelAmplitudeBaseText"></div>
 					<input id="channelAmplitudeBaseInputRange" max="1" min="-1" step="0.1" type="range">
 				</div>
 			</div>
-			<div class="grid-item" id="inputControlDiv3" style="background-color:Gainsboro;border:solid;visibility:hidden;">
+			<div class="border-solid grid-item visibility-hidden" id="inputControlDiv3">
 				<div>
-					<text id="channelAmplitudeMaxText"></text>
+					<div id="channelAmplitudeMaxText"></div>
 					<input type="range" id="channelAmplitudeMaxInputRange" min="-1" step="0.1" max="1">
 				</div>
 				<div>
-					<text id="channelDistanceMinText"></text>
+					<div id="channelDistanceMinText"></div>
 					<input id="channelDistanceMinInputRange" max="100" min="0" type="range" >
 				</div>
 					<div>
-						<text id="channelDistanceMaxText"></text>
+						<div id="channelDistanceMaxText"></div>
 						<input id="channelDistanceMaxInputRange" max="100" min="0" type="range" >
 					</div>
 			</div>
-			<div class="grid-item" id="inputControlDiv4" style="background-color:Gainsboro;border:solid;visibility:hidden;">
+			<div class="border-solid grid-item visibility-hidden" id="inputControlDiv4">
 				<div>
 					<label>
 						dynamic noise:<input id="noiseInitializeInputCheckbox" type="checkbox">
 					</label>
 				</div>
 				<div>
-					<text>noise: </text>
-					<select id="inputNoiseTypeSelect"></select>
+					<span>noise: </span><select id="inputNoiseTypeSelect"></select>
 				</div>
 				<div>
-					<text id="noiseSigmaText"></text>
+					<div id="noiseSigmaText"></div>
 					<input id="noiseSigmaInputRange" max="1" min="0" step="0.1" type="range">
 				</div>
 			</div>
-			<div class="grid-item" id="inputControlDiv5" style="background-color:Gainsboro;border:solid;visibility:hidden;">
+			<div class="border-solid grid-item visibility-hidden" id="inputControlDiv5">
 				<div>
-					<text>resize function: </text>
+					<div>resize function: </div>
 					<select id="inputResizeFunctionSelect"></select>
 				</div>
 				<div>
-					<text id="resizeMultiplierText"></text>
+					<div id="resizeMultiplierText"></div>
 					<input id="resizeMultiplierInputRange" max="1" min="0.1" step="0.1" type="range">
 				</div>
 				<div>
-					<text id="quantizationStatesNumText"></text>
+					<div id="quantizationStatesNumText"></div>
 					<input id="quantizationStatesNumInputRange" max="100" min="1" type="range">
 				</div>
 				<div>
@@ -211,7 +210,7 @@
 					</label>
 				</div>
 			</div>
-			<div class="grid-item" id="neurolControlDiv1" style="background-color:Silver;border:solid;visibility:hidden;">
+			<div class="border-solid grid-item visibility-hidden" id="neuronControlDiv1">
 				<div>
 					<input id="neuronUseInputCheckbox" type="checkbox">
 					<svg height="14" id="neuronColoredBoxSvg" width="14">
@@ -220,127 +219,123 @@
 					<select id="neuronIndexSelect"></select>
 				</div>
 				<div>
-					<text>init: </text>
-					<select id="kernelInitializationSelect"></select>
+					<span>init: </span><select id="kernelInitializationSelect"></select>
 				</div>
 				<div>
-					<text id="kernelSizeText"></text>
+					<div id="kernelSizeText"></div>
 					<input id="kernelSizeInputRange" min="1" type="range">
 				</div>
 				<div>
-					<text id="kernelAmplitudeText"></text>
+					<div id="kernelAmplitudeText"></div>
 					<input id="kernelAmplitudeInputRange" max="1" min="-1" step="0.1" type="range">
 				</div>
 			</div>
-			<div class="grid-item" id="neuronControlDiv2" style="background-color:Silver;border:solid;visibility:hidden;">
+			<div class="border-solid grid-item visibility-hidden" id="neuronControlDiv2">
 				<div>
-					<text>resize function: </text>
+					<div>resize function: </div>
 					<select id="kernelResizeFunctionSelect"></select>
 				</div>
 				<div>
-					<text id="kernelResizeMultiplierText"></text>
+					<div id="kernelResizeMultiplierText"></div>
 					<input id="kernelResizeMultiplierInputRange" max="100" min="0.1" step="0.1" type="range" >
 				</div>
 			</div>
-			<div class="grid-item" id="inputDiv" style="border:solid"></div>
+			<div class="border-solid grid-item" id="inputDiv"></div>
 			<div class="grid-item" id="horizontalLineDiv1"></div>
 			<div class="grid-item" id="horizontalLineDiv2"></div>
 			<div class="grid-item" id="convEncoderDiv"></div>
-			<div class="grid-item" id="similaritiesDiv" style="border:solid"></div>
-			<div class="grid-item" id="neuronControlDiv3" style="background-color:Silver;border:solid;visibility:hidden;">
+			<div class="border-solid grid-item" id="similaritiesDiv"></div>
+			<div class="border-solid grid-item visibility-hidden" id="neuronControlDiv3">
 				<div>
 					<label>
 						ConvEncoder:<input id="convEncoderUseInputCheckbox" type="checkbox">
 					</label>
 				</div>
 				<div>
-					<text id="kernelStrideText"></text>
+					<div id="kernelStrideText"></div>
 					<input id="kernelStrideInputRange" min="1" type="range">
 				</div>
 				<div>
-					<text>resize function: </text>
+					<div>resize function: </div>
 					<select id="strideResizeFunctionSelect"></select>
 				</div>
 			</div>
-			<div class="grid-item" id="lossControlDiv" style="background-color:Silver;border:solid;visibility:hidden;">
+			<div class="border-solid grid-item visibility-hidden" id="lossControlDiv">
 				<div>
-					<text>optimizer: </text>
-					<select id="optimizerSelect"></select>
+					<span>optimizer: </span><select id="optimizerSelect"></select>
 				</div>
 				<div>
-					<text>loss: </text>
-					<select id="lossFunctionSelect"></select>
+					<span>loss: </span><select id="lossFunctionSelect"></select>
 				</div>
 				<div>
-					<text id="learningRateText"></text>
+					<div id="learningRateText"></div>
 					<input id="learningRateExponentInputRange" max="1" min="-3" step="0.1" type="range">
 				</div>
 			</div>
 			<div class="grid-item" id="lossDiv"></div>
-			<div class="grid-item" id="ndnlDiv" style="border:solid"></div>
+			<div class="border-solid grid-item" id="ndnlDiv"></div>
 			<div class="grid-item" id="helpDiv"></div>
-			<div class="grid-item" id="kernelDiv" style="border:solid"></div>
+			<div class="border-solid grid-item" id="kernelDiv"></div>
 			<div class="grid-item" id="activationFunctionDiv"></div>
-			<div class="grid-item" id="activationFunctionControlDiv" style="background-color:Silver;border:solid">
+			<div class="border-solid grid-item" id="activationFunctionControlDiv">
 				<div>
-					<text id="activationAmplitudeMinText"></text>
+					<div id="activationAmplitudeMinText"></div>
 					<input id="activationAmplitudeMinInputRange" max="1" min="0" step="0.1" type="range">
 				</div>
 				<div>
-					<text>\(\phi\): </text>
-					<select id="activationFunctionSelect"></select>
+					<span>\(\phi\): </span><select id="activationFunctionSelect"></select>
 				</div>
 				<div>
-					<text id="activationDistanceMinText"></text>
+					<div id="activationDistanceMinText"></div>
 					<input id="activationDistanceMinInputRange" type="range" min="0">
 				</div>
 				<div>
-					<label id="activationRegulatesLabel" style="visibility:hidden;">
+					<label class="visibility-hidden" id="activationRegulatesLabel">
 						regulates:<input type="checkbox" id="activationRegulatesInputCheckbox">
 					</label>
 				</div>
 				<div>
-					<label id="activationRegulatedLabel" style="visibility:hidden;">
+					<label class="visibility-hidden" id="activationRegulatedLabel">
 						regulated:<input id="activationRegulatedInputCheckbox" type="checkbox">
 					</label>
 				</div>
 			</div>
-			<div class="grid-item" id="actionDiv" style="background-color:Silver;border:solid">
+			<div class="border-solid grid-item" id="actionDiv">
 				<div>
-					<text>\(\big\| \hat{x} \big\|\) = </text><text id="inputReconstructionEnergyText"></text>
+					<span>\(\big\| \hat{x} \big\|\) = </span><span id="inputReconstructionEnergyText"></span>
 				</div>
 				<div>
-					<text>\(\big\| x - \hat{x} \big\|\) = </text><text id="inputReconstructionLossText"></text>
+					<span>\(\big\| x - \hat{x} \big\|\) = </span><span id="inputReconstructionLossText"></span>
 				</div>
 				<div>
-					<text>\(\big\| d_{0 \rightarrow \hat{x}} \big\|\) = </text><text id="descriptionLengthText"></text>
+					<span>\(\big\| d_{0 \rightarrow \hat{x}} \big\|\) = </span><span id="descriptionLengthText"></span>
 				</div>
 				<div>
-					<text>\(\big\| d_{\hat{x} \rightarrow x} \big\|\) = </text><text id="lossDescriptionLengthText"></text>
+					<span>\(\big\| d_{\hat{x} \rightarrow x} \big\|\) = </span><span id="lossDescriptionLengthText"></span>
 				</div>
 				<div>
-					<text>\(\mathcal{S}\) = </text><text id="actionText"></text>
+					<span>\(\mathcal{S}\) = </span><span id="actionText"></span>
 				</div>
 			</div>
-			<div class="grid-item" id="reconstructionDiv" style="border:solid"></div>
+			<div class="border-solid grid-item" id="reconstructionDiv"></div>
 			<div class="grid-item" id="sumDiv"></div>
-			<div class="grid-item" id="kernelReconstructionsDiv" style="border:solid"></div>
+			<div class="border-solid grid-item" id="kernelReconstructionsDiv"></div>
 			<div class="grid-item" id="convDecoderDiv"></div>
-			<div class="grid-item" id="activationsDiv" style="border:solid"></div>
-			<div class="grid-item" id="startPauseResetControlDiv" style="background-color:DarkGray;border:solid">
+			<div class="border-solid grid-item" id="activationsDiv"></div>
+			<div class="border-solid grid-item" id="startPauseResetControlDiv">
 				<div>
-					<input id="startPauseButton" type="button">
-					<input id="stopButton" type="button" value="stop">
+					<button id="startPauseButton" type="button">start</button>
+					<button id="stopButton" type="button">stop</button>
 				</div>
 				<div>
-					<text>example: </text>
+					<div>example: </div>
 					<select id="exampleSelect"></select>
 				</div>
 				<div>
-					<text id="epochText"></text>
+					<div id="epochText"></div>
 				</div>
 				<div>
-					<text id="timePerEpochText"></text>
+					<div id="timePerEpochText"></div>
 				</div>
 				<div>
 					<label>
@@ -348,27 +343,26 @@
 					</label>
 				</div>
 			</div>
-			<div class="grid-item" id="referenceControlDiv" style="background-color:DarkGray;border:solid;visibility:hidden;">
+			<div class="border-solid grid-item visibility-hidden" id="referenceControlDiv">
 				<div>
 					<select id="referenceFunctionSelect"></select>
 				</div>
 				<div>
-					<text>\(\big\| \hat{x} \big\|\) = </text><text id="referenceZeroReconstructionLossText"></text>
+					<span>\(\big\| \hat{x} \big\|\) = </span><span id="referenceZeroReconstructionLossText"></span>
 				</div>
 				<div>
-					<text>\(\big\| x - \hat{x} \big\|\) = </text><text id="referenceReconstructionLossText"></text>
+					<span>\(\big\| x - \hat{x} \big\|\) = </span><span id="referenceReconstructionLossText"></span>
 				</div>
 				<div>
-					<text>\(\big\| d_{0 \rightarrow \hat{x}} \big\|\) = </text><text id="referenceDescriptionLengthText"></text>
+					<span>\(\big\| d_{0 \rightarrow \hat{x}} \big\|\) = </span><span id="referenceDescriptionLengthText"></span>
 				</div>
 				<div>
-					<text>\(\big\| d_{\hat{x} \rightarrow x} \big\|\) = </text><text id="referenceLossDescriptionLengthText"></text>
+					<span>\(\big\| d_{\hat{x} \rightarrow x} \big\|\) = </span><span id="referenceLossDescriptionLengthText"></span>
 				</div>
 				<div>
-					<text>\(\mathcal{S}\) = </text><text id="referenceActionText"></text>
+					<span>\(\mathcal{S}\) = </span><span id="referenceActionText"></span>
 				</div>
 			</div>
-		</div>
 		</div>
 
 		<p>
@@ -405,7 +399,7 @@
 		Similarly, biological organisms describe concepts or thoughts to varying levels of accuracy constrained by the expressiveness of the language used within an environment.
 		In the interactive dashboard, we could view the set of kernels as a generated language, which along with the activations consist of the description of the data.
 		</p>
-		
+
 		<p>
 		Lastly, \(\mathcal{S}\) is a lossy compression metric and could be viewed as an intelligence metric, which is in contrast with previous literature that assumes intelligence is lossless compression<a href="#citation-7">[7]</a>.
 		</p>
@@ -418,7 +412,7 @@
 
 		<b>References</b>
 
-		<p id="citation-1">[1] Siburg, Karl Friedrich. The principle of least action in geometry and dynamics. No. 1844. Springer Science & Business Media, 2004.</p>
+		<p id="citation-1">[1] Siburg, Karl Friedrich. The principle of least action in geometry and dynamics. No. 1844. Springer Science &amp; Business Media, 2004.</p>
 		<p id="citation-2">[2] Bizopoulos, Paschalis, and Dimitrios Koutsouris. "Sparsely activated networks." IEEE Transactions on Neural Networks and Learning Systems 32.3 (2020): 1304-1313.</p>
 		<p id="citation-3">[3] Shannon, Claude Elwood. "A mathematical theory of communication." ACM SIGMOBILE mobile computing and communications review 5.1 (2001): 3-55.</p>
 		<p id="citation-4">[4] Li, Ming, and Paul Vitányi. An introduction to Kolmogorov complexity and its applications. Vol. 3. New York: Springer, 2008.</p>
