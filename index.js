@@ -4,9 +4,9 @@ const path = require('path');
 const puppeteer = require('puppeteer');
 
 (async () => {
-	const browser = await puppeteer.launch({ headless: true });
+	const browser = await puppeteer.launch({headless: true});
 	const page = await browser.newPage();
-	await page.setViewport({ width: 1920, height: 1080 });
+	await page.setViewport({height: 1080, width: 1920});
 	await page.goto(`file:${path.join(__dirname, 'docs/index.html')}`);
 	await page.waitForSelector('#startPauseButton').then(selector => selector.click());
 	await page.waitForSelector('#startPauseButton').then(selector => selector.click());
@@ -48,9 +48,9 @@ const puppeteer = require('puppeteer');
 		document.querySelector('#sizeInputRange').value = 120;
 		document.querySelector('#velocityInputRange').value = 5;
 	});
-	await page.waitForTimeout(1000)
+	await page.waitForTimeout(1000);
 	await page.screenshot({
-		path: 'artifacts/puppeteer-screenshot.png'
+		path: 'bin/puppeteer-screenshot.png'
 	});
 	await page.close();
 	await browser.close();

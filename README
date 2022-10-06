@@ -10,7 +10,6 @@ npm
 git clone https://github.com/pbizopoulos/action-as-information
 cd action-as-information/
 
-# Basic commands
-make		# Generate artifacts.
-make clean 	# Remove dependent directories.
-make help	# Show all commands.
+# Usage
+make help		# Show help for node.
+make help -C docs/ 	# Show help for html.

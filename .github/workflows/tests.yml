@@ -9,5 +9,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 17
-      - name: Test
+      - name: Check code
+        run: |
+          make check
+          make -C docs/ check
+      - name: Test binary
         run: make
