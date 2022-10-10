@@ -10,7 +10,7 @@ const puppeteer = require('puppeteer');
 	page.on('pageerror', pageerr => {
 		// assert.fail(pageerr);
 		console.log(pageerr);
-	})
+	});
 	await page.setViewport({height: 1080, width: 1920});
 	await page.goto(`file:${path.join(__dirname, 'docs/index.html')}`);
 	await page.waitForSelector('#startPauseButton').then(selector => selector.click());

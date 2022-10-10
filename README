@@ -4,6 +4,7 @@ https://pbizopoulos.github.io/action-as-information
 # Requirements
 POSIX mandatory utilities
 Make
+Docker
 npm
 
 # Preparation
