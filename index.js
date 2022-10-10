@@ -1,11 +1,16 @@
 'use strict';
 
+const assert = require('assert');
 const path = require('path');
 const puppeteer = require('puppeteer');
 
 (async () => {
 	const browser = await puppeteer.launch({headless: true});
 	const page = await browser.newPage();
+	page.on('pageerror', pageerr => {
+		// assert.fail(pageerr);
+		console.log(pageerr);
+	})
 	await page.setViewport({height: 1080, width: 1920});
 	await page.goto(`file:${path.join(__dirname, 'docs/index.html')}`);
 	await page.waitForSelector('#startPauseButton').then(selector => selector.click());
