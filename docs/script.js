@@ -375,6 +375,7 @@
 					.text((tmp * input.size).toFixed(4));
 				return inputReconstructionLoss;
 			});
+			console.log(value);
 			d3.select('#descriptionLengthText')
 				.text(inputReconstructionDescriptionLength);
 			d3.select('#referenceDescriptionLengthText')
@@ -1646,7 +1647,7 @@
 					return;
 				}
 				event.currentTarget.textContent = 'pause';
-				interval = setInterval(() => { console.log(tf.memory()); train(); }, 0);
+				interval = setInterval(() => { train(); }, 0);
 			} else {
 				event.currentTarget.textContent = 'start';
 				clearInterval(interval);
@@ -1662,8 +1663,8 @@
 		.on('click', () => {
 			d3.select('#exampleSelect')
 				.dispatch('change');
-			d3.select('#startPauseButton')
-				.attr('textContent', 'start');
+			const startPauseButton = document.getElementById('startPauseButton');
+			startPauseButton.textContent = 'start';
 			clearInterval(interval);
 		});
 	d3.select('#stopButton')

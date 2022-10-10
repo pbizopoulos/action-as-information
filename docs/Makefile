@@ -49,20 +49,8 @@ bin/cert.pem: bin
 		--workdir $(work_dir)/ \
 		alpine/openssl req -newkey rsa:2048 -subj "/C=../ST=../L=.../O=.../OU=.../CN=.../emailAddress=..." -new -nodes -x509 -days 3650 -keyout bin/key.pem -out bin/cert.pem
 
-bin/check: .dockerignore .gitignore bin bin/check-html bin/check-css bin/check-js
+bin/check: .dockerignore .gitignore bin bin/check-html bin/check-js
 	touch bin/check
-
-bin/check-css: .dockerignore .gitignore bin style.css
-	$(container_engine) container run \
-		$(debug_args) \
-		$(user_arg) \
-		--env HOME=$(work_dir)/bin \
-		--env NODE_PATH=$(work_dir)/bin \
-		--rm \
-		--volume $$(pwd):$(work_dir)/ \
-		--workdir $(work_dir)/ \
-		node npx --yes css-validator --profile css3svg style.css
-	touch bin/check-css
 
 bin/check-html: .dockerignore .gitignore bin index.html
 	$(container_engine) container run \
