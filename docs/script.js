@@ -46,15 +46,15 @@
 	function addNeuronKernelWeightAndVisualizations(index) {
 		tf.tidy(() => {
 			switch (neuronArray[index].kernel.initialization) {
-				case 'constant':
-					neuronArray[index].kernel.weights = tf.variable(tf.fill([neuronArray[index].kernel.size, 1, 1], neuronArray[index].kernel.amplitude));
-					break;
-				case 'normal':
-					neuronArray[index].kernel.weights = tf.variable(tf.randomNormal([neuronArray[index].kernel.size, 1, 1], 0, neuronArray[index].kernel.amplitude));
-					break;
-				case 'uniform':
-					neuronArray[index].kernel.weights = tf.variable(tf.randomUniform([neuronArray[index].kernel.size, 1, 1], -neuronArray[index].kernel.amplitude, neuronArray[index].kernel.amplitude));
-					break;
+			case 'constant':
+				neuronArray[index].kernel.weights = tf.variable(tf.fill([neuronArray[index].kernel.size, 1, 1], neuronArray[index].kernel.amplitude));
+				break;
+			case 'normal':
+				neuronArray[index].kernel.weights = tf.variable(tf.randomNormal([neuronArray[index].kernel.size, 1, 1], 0, neuronArray[index].kernel.amplitude));
+				break;
+			case 'uniform':
+				neuronArray[index].kernel.weights = tf.variable(tf.randomUniform([neuronArray[index].kernel.size, 1, 1], -neuronArray[index].kernel.amplitude, neuronArray[index].kernel.amplitude));
+				break;
 			}
 		});
 		activationsSvg.append('path')
@@ -133,17 +133,17 @@
 				let downsampled = null;
 				const sorted = tf.topk(input.data.abs().squeeze(-1), i);
 				switch (referenceFunction) {
-					case 'absolute topk':
-						reference = tf.scatterND(sorted.indices, tf.gather(input.data, sorted.indices).squeeze(-1), [input.data.size]).expandDims(-1).expandDims(-1);
-						break;
-					case 'subsample bilinear':
-						downsampled = tf.image.resizeBilinear(input.data.expandDims(-1), [i, 1]);
-						reference = tf.image.resizeBilinear(downsampled, input.data.shape);
-						break;
-					case 'subsample nn':
-						downsampled = tf.image.resizeNearestNeighbor(input.data.expandDims(-1), [i, 1]);
-						reference = tf.image.resizeNearestNeighbor(downsampled, input.data.shape);
-						break;
+				case 'absolute topk':
+					reference = tf.scatterND(sorted.indices, tf.gather(input.data, sorted.indices).squeeze(-1), [input.data.size]).expandDims(-1).expandDims(-1);
+					break;
+				case 'subsample bilinear':
+					downsampled = tf.image.resizeBilinear(input.data.expandDims(-1), [i, 1]);
+					reference = tf.image.resizeBilinear(downsampled, input.data.shape);
+					break;
+				case 'subsample nn':
+					downsampled = tf.image.resizeNearestNeighbor(input.data.expandDims(-1), [i, 1]);
+					reference = tf.image.resizeNearestNeighbor(downsampled, input.data.shape);
+					break;
 				}
 				referenceArray.push(tf.keep(reference));
 				referenceDescriptionLengthArray.push(i);
@@ -210,21 +210,21 @@
 			let motifData = null;
 			const elementsNum = Math.round(input.channelArray[index].motifSize/2);
 			switch (input.channelArray[index].motifType) {
-				case 'constant':
-					motifData = tf.fill([input.channelArray[index].motifSize, 1, 1], 1);
-					break;
-				case 'cos':
-					motifData = tf.cos(tf.linspace(0, 2*Math.PI, input.channelArray[index].motifSize)).expandDims(-1).expandDims(-1);
-					break;
-				case 'random':
-					motifData = tf.randomNormal([input.channelArray[index].motifSize, 1, 1]);
-					break;
-				case 'sin':
-					motifData = tf.sin(tf.linspace(0, 2*Math.PI, input.channelArray[index].motifSize)).expandDims(-1).expandDims(-1);
-					break;
-				case 'triangle':
-					motifData = tf.linspace(0, 1 - 1/elementsNum, elementsNum).concat(tf.linspace(1, 1/elementsNum, elementsNum)).expandDims(-1).expandDims(-1);
-					break;
+			case 'constant':
+				motifData = tf.fill([input.channelArray[index].motifSize, 1, 1], 1);
+				break;
+			case 'cos':
+				motifData = tf.cos(tf.linspace(0, 2*Math.PI, input.channelArray[index].motifSize)).expandDims(-1).expandDims(-1);
+				break;
+			case 'random':
+				motifData = tf.randomNormal([input.channelArray[index].motifSize, 1, 1]);
+				break;
+			case 'sin':
+				motifData = tf.sin(tf.linspace(0, 2*Math.PI, input.channelArray[index].motifSize)).expandDims(-1).expandDims(-1);
+				break;
+			case 'triangle':
+				motifData = tf.linspace(0, 1 - 1/elementsNum, elementsNum).concat(tf.linspace(1, 1/elementsNum, elementsNum)).expandDims(-1).expandDims(-1);
+				break;
 			}
 			input.channelArray[index].data = tf.keep(tf.conv1d(motifPositions, motifData, 1, 'same'));
 		});
@@ -313,11 +313,11 @@
 						}
 						neuronArray[i].activation.data = neuronArray[i].similarity.where(tf.logicalOr(neuronArray[i].similarity.greaterEqual(neuronArray[i].similarity.max().mul(neuronArray[i].activation.amplitudeMin)), neuronArray[i].similarity.lessEqual(neuronArray[i].similarity.max().mul(-neuronArray[i].activation.amplitudeMin))), tf.zerosLike(neuronArray[i].similarity));
 						switch (neuronArray[i].activation.function_) {
-							case 'none':
-								break;
-							case 'extrema':
-								neuronArray[i].activation.data = extrema1d(neuronArray[i].activation.data.squeeze());
-								break;
+						case 'none':
+							break;
+						case 'extrema':
+							neuronArray[i].activation.data = extrema1d(neuronArray[i].activation.data.squeeze());
+							break;
 						}
 						[neuronArray[i].activation.data, neuronActivationAreaAllowedArray[i]] = applyDistanceMin(neuronArray[i].activation.data.squeeze().arraySync(), neuronArray[i].activation.distanceMin);
 					} else {
