@@ -54,9 +54,7 @@ const puppeteer = require('puppeteer');
 		document.querySelector('#velocityInputRange').value = 5;
 	});
 	await page.waitForTimeout(1000);
-	await page.screenshot({
-		path: 'bin/puppeteer-screenshot.png'
-	});
+	await page.screenshot({path: 'bin/puppeteer-screenshot.png'});
 	await page.close();
 	await browser.close();
 })();
