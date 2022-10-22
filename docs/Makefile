@@ -6,12 +6,13 @@ container_engine = docker # For podman first execute `printf 'unqualified-search
 css_target = $$(test -s style.css && printf '%s' 'bin/check-css')
 debug = 1
 debug_args = $$(test -t 0 && printf '%s' '--interactive --tty')
+html_target = $$(test -s index.html && printf '%s' 'bin/check-html')
 js_target = $$(test -s script.js && printf '%s' 'bin/check-js')
 npx_timeout_command = $$(test $(debug) = 1 && printf '%s' '& sleep 1; kill $$!')
 user_arg = $$(test $(container_engine) = 'docker' && printf '%s' "--user $$(id -u):$$(id -g)")
 work_dir = /work
 
-all: .dockerignore .gitignore bin/cert.pem index.html
+all: .dockerignore .gitignore bin/cert.pem
 	$(container_engine) container run \
 		$(debug_args) \
 		$(user_arg) \
@@ -52,7 +53,7 @@ bin/cert.pem: bin
 		alpine/openssl req -newkey rsa:2048 -subj "/C=../ST=../L=.../O=.../OU=.../CN=.../emailAddress=..." -new -nodes -x509 -days 3650 -keyout bin/key.pem -out bin/cert.pem
 
 bin/check: .dockerignore .gitignore bin
-	make -f $(MAKEFILE_LIST) bin/check-html $(js_target) # $(css_target)
+	$(MAKE) $(html_target) $(js_target) # $(css_target)
 
 bin/check-css: .dockerignore .gitignore bin style.css
 	$(container_engine) container run \
@@ -92,6 +93,3 @@ bin/check-js: .dockerignore .gitignore bin bin/eslintrc.js script.js
 
 bin/eslintrc.js: bin
 	echo 'module.exports = { "env": { "browser": true, "es2021": true }, "extends": "eslint:recommended", "overrides": [ ], "parserOptions": { "ecmaVersion": "latest" }, "rules": { "indent": [ "error", "tab" ], "linebreak-style": [ "error", "unix" ], "quotes": [ "error", "single" ], "semi": [ "error", "always" ], "no-undef": 0 } }' > bin/eslintrc.js
-
-index.html:
-	touch index.html
