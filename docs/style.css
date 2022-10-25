@@ -1,13 +1,13 @@
-#neuron-control-1-div, #neuron-control-2-div, #neuron-control-3-div, #loss-control-div, #activation-function-control-div, #action-div {
-	background-color:Silver;
+#action-div, #activation-function-control-div, #loss-control-div, #neuron-control-1-div, #neuron-control-2-div, #neuron-control-3-div {
+	background-color: Silver;
 }
 
 #input-control-1-div, #input-control-2-div, #input-control-3-div, #input-control-4-div, #input-control-5-div {
-	background-color:Gainsboro;
+	background-color: Gainsboro;
 }
 
-#start-pause-reset-control-div, #reference-control-div {
-	background-color:DarkGray;
+#reference-control-div, #start-pause-reset-control-div {
+	background-color: DarkGray;
 }
 
 .grid-container {
@@ -31,31 +31,31 @@
 }
 
 .annotationSvg {
-	stroke:black;
+	stroke: black;
 }
 
 .border-solid {
-	border:solid;
+	border: solid;
 }
 
 .fill-white {
-	fill:white;
+	fill: white;
 }
 
 .fill-gainsboro {
-	fill:gainsboro;
+	fill: gainsboro;
 }
 
 .fill-silver {
-	fill:silver;
+	fill: silver;
 }
 
 .fill-darkgray {
-	fill:darkgray;
+	fill: darkgray;
 }
 
 .visibility-hidden {
-	visibility:hidden;
+	visibility: hidden;
 }
 
 text {
