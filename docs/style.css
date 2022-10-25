@@ -1,12 +1,12 @@
-#neuronControlDiv1, #neuronControlDiv2, #neuronControlDiv3, #lossControlDiv, #activationFunctionControlDiv, #actionDiv {
+#neuron-control-1-div, #neuron-control-2-div, #neuron-control-3-div, #loss-control-div, #activation-function-control-div, #action-div {
 	background-color:Silver;
 }
 
-#inputControlDiv1, #inputControlDiv2, #inputControlDiv3, #inputControlDiv4, #inputControlDiv5 {
+#input-control-1-div, #input-control-2-div, #input-control-3-div, #input-control-4-div, #input-control-5-div {
 	background-color:Gainsboro;
 }
 
-#startPauseResetControlDiv, #referenceControlDiv {
+#start-pause-reset-control-div, #reference-control-div {
 	background-color:DarkGray;
 }
 
