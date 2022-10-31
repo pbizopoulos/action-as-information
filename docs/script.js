@@ -443,7 +443,8 @@
 	activationFunctionSvg.append('circle')
 		.attr('class', 'circle-operation')
 		.attr('cx', '50%')
-		.attr('cy', '25%');
+		.attr('cy', '25%')
+		.attr('r', '15px');
 	activationFunctionSvg.append('text')
 		.attr('x', '50%')
 		.attr('y', '25%')
@@ -451,7 +452,8 @@
 	activationFunctionSvg.append('circle')
 		.attr('class', 'circle-operation')
 		.attr('cx', '50%')
-		.attr('cy', '50%');
+		.attr('cy', '50%')
+		.attr('r', '15px');
 	activationFunctionSvg.append('text')
 		.attr('x', '50%')
 		.attr('y', '50%')
@@ -459,7 +461,8 @@
 	activationFunctionSvg.append('circle')
 		.attr('class', 'circle-operation')
 		.attr('cx', '50%')
-		.attr('cy', '75%');
+		.attr('cy', '75%')
+		.attr('r', '15px');
 	activationFunctionSvg.append('text')
 		.attr('x', '50%')
 		.attr('y', '75%')
@@ -499,7 +502,8 @@
 	convDecoderSvg.append('circle')
 		.attr('class', 'circle-operation')
 		.attr('cx', '50%')
-		.attr('cy', '50%');
+		.attr('cy', '50%')
+		.attr('r', '15px');
 	convDecoderSvg.append('text')
 		.attr('x', '50%')
 		.attr('y', '50%')
@@ -507,7 +511,8 @@
 	convDecoderSvg.append('circle')
 		.attr('class', 'circle-operation')
 		.attr('cx', '50%')
-		.attr('cy', '20%');
+		.attr('cy', '20%')
+		.attr('r', '15px');
 	convDecoderSvg.append('text')
 		.attr('x', '50%')
 		.attr('y', '20%')
@@ -536,7 +541,8 @@
 	convEncoderSvg.append('circle')
 		.attr('class', 'circle-operation')
 		.attr('cx', '50%')
-		.attr('cy', '50%');
+		.attr('cy', '50%')
+		.attr('r', '15px');
 	convEncoderSvg.append('text')
 		.attr('x', '50%')
 		.attr('y', '50%')
@@ -544,7 +550,8 @@
 	convEncoderSvg.append('circle')
 		.attr('class', 'circle-operation')
 		.attr('cx', '75%')
-		.attr('cy', '50%');
+		.attr('cy', '50%')
+		.attr('r', '15px');
 	convEncoderSvg.append('text')
 		.attr('x', '75%')
 		.attr('y', '50%')
@@ -552,7 +559,8 @@
 	convEncoderSvg.append('circle')
 		.attr('class', 'circle-operation')
 		.attr('cx', '50%')
-		.attr('cy', '80%');
+		.attr('cy', '80%')
+		.attr('r', '15px');
 	convEncoderSvg.append('text')
 		.attr('x', '50%')
 		.attr('y', '80%')
@@ -668,7 +676,8 @@
 	lossSvg.append('circle')
 		.attr('class', 'circle-operation')
 		.attr('cx', '50%')
-		.attr('cy', '50%');
+		.attr('cy', '50%')
+		.attr('r', '15px');
 	lossSvg.append('text')
 		.attr('x', '50%')
 		.attr('y', '50%')
@@ -749,7 +758,8 @@
 	sumSvg.append('circle')
 		.attr('class', 'circle-operation')
 		.attr('cx', '50%')
-		.attr('cy', '50%');
+		.attr('cy', '50%')
+		.attr('r', '15px');
 	sumSvg.append('text')
 		.attr('x', '50%')
 		.attr('y', '50%')

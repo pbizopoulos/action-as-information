@@ -57,7 +57,7 @@ bin/cert.pem: bin
 		alpine/openssl req -newkey rsa:2048 -subj "/C=../ST=../L=.../O=.../OU=.../CN=.../emailAddress=..." -new -nodes -x509 -days 3650 -keyout bin/key.pem -out bin/cert.pem
 
 bin/check: .dockerignore .gitignore bin
-	$(MAKE) $(html_target) $(js_target) # $(css_target)
+	$(MAKE) $(css_target) $(html_target) $(js_target)
 
 bin/check-css: .dockerignore .gitignore bin $(css_file_name)
 	$(container_engine) container run \
