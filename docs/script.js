@@ -239,7 +239,7 @@
 		tf.tidy(() => {
 			input.data = tf.zeros([inputSizeMax, 1]);
 			for (let i = 0; i < motifMaxNum; i++) {
-				if (input.channelArray[i].use) {
+				if (input.channelArray[i].use && input.channelArray[i].data) {
 					input.data = input.data.add(input.channelArray[i].data);
 				}
 			}
@@ -300,7 +300,13 @@
 		let neuronActivationAreaAllowedArray = [];
 		tf.tidy(() => {
 			const optimizer = optimizerObject[optimizerKey](10**learningRateExponent);
-			let inputReconstruction = tf.zerosLike(input.data);
+			let inputReconstruction = null;
+			if (input.data) {
+				inputReconstruction = tf.zerosLike(input.data);
+			}
+			if (neuronArray.filter(neuron => neuron.kernel.weights).filter(neuron => neuron.kernel.weights.trainable).length === 0) {
+				return;
+			}
 			const {value, grads} = tf.variableGrads(() => {
 				for (let i = 0; i < neuronMaxNum; i++) {
 					if (neuronArray[i].use) {
