@@ -5,7 +5,6 @@
 		<meta content="width=device-width, initial-scale=1" name="viewport">
 		<title>Action as Information</title>
 		<link href="data:," rel="icon">
-		<link href="https://pbizopoulos.github.io/style.css" rel="stylesheet">
 		<link href="style.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" crossorigin="anonymous">
 		<script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
@@ -18,16 +17,15 @@
 		<script defer src="script.js"></script>
 	</head>
 	<body>
-		<div id="div-header">
-			<div id="div-navigation">
-				<a href="https://pbizopoulos.github.io">Home page</a> / <b>Action as Information</b>
-			</div>
-			<div id="div-source-code-link">
-				<a href="https://github.com/pbizopoulos/action-as-information">Source code</a>
-			</div>
-		</div>
+		<nav>
+			<a href="https://pbizopoulos.github.io">Home page</a> |
+			<a href="https://github.com/pbizopoulos/action-as-information">Source code</a>
+		</nav>
+		<header>
+			<h2>Action as Information</h2>
+		</header>
 
-		<b>Abstract</b>
+		<h3>Abstract</h3>
 
 		<p>
 		We define action as proportional to the energy and description length of some data.
@@ -36,7 +34,7 @@
 		Lastly, we argue that this definition of action can be used to quantify information and discuss how it relates with previous literature.
 		</p>
 
-		<b>Introduction</b>
+		<h3>Introduction</h3>
 
 		<p>
 		Action is a functional that receives the history of a system as input and outputs a number.
@@ -62,7 +60,7 @@
 		Then, we argue that action is the quantity of information of the data that is 'perceived' by the description (viewed as an observer).
 		</p>
 
-		<b>Formal definition of Action</b>
+		<h3>Formal definition of Action</h3>
 
 		<p>
 		Let \(x \in \mathbb{R}^n\) some data and \(d_{0 \rightarrow x} \in D\) a description of the traversal from \(0\) to \(x\), where \(D\) a description language.
@@ -84,7 +82,7 @@
 		This formulation allows us to trade description length with energy and get closer to the minima of \(\mathcal{S}\).
 		</p>
 
-		<b>Sparsely Activated Networks</b>
+		<h3>Sparsely Activated Networks</h3>
 
 		<p>
 		We present Sparsely Activated Networks (SANs)<a href="#citation-2">[2]</a> in order to use them as \(d_{0 \rightarrow \hat{x}}\).
@@ -119,7 +117,7 @@
 		, where \(\dim\) denotes dimensionality, \(\max\) the maximum function and we omit the neural network architecture constant \(c\) as it does not change within our experiment.
 		</p>
 
-		<b>Interactive parametric dashboard</b>
+		<h3>Interactive parametric dashboard</h3>
 
 		<p>
 		Here we demonstrate the calculation of \(\mathcal{S}\) of motif-based time-series w.r.t. SANs as \(d_{0 \rightarrow \hat{x}}\).
@@ -370,7 +368,7 @@
 		An easy way to demonstrate the previous is by varying the \(T_e\) slider and inspect the corresponding values of \(\mathcal{S}\).
 		</p>
 
-		<b>Discussion</b>
+		<h3>Discussion</h3>
 
 		<p>
 		We can view \(\mathcal{S}\) as a deterministic metric of the informational content of \(x\) (observation) that is perceived by \(d_{0 \rightarrow \hat{x}}\) (observer); the lower the value of \(\mathcal{S}\), the less information (or less random) is perceived by \(d_{0 \rightarrow \hat{x}}\).
@@ -404,13 +402,13 @@
 		Lastly, \(\mathcal{S}\) is a lossy compression metric and could be viewed as an intelligence metric, which is in contrast with previous literature that assumes intelligence is lossless compression<a href="#citation-7">[7]</a>.
 		</p>
 
-		<b>Conclusion</b>
+		<h3>Conclusion</h3>
 
 		<p>
 		By defining \(\mathcal{S}\) for data and their descriptions we conclude that minimizing \(\mathcal{S}\) provides us with accurate and concise descriptions of data in the same way that action from physics shows as the path that nature chose to take.
 		</p>
 
-		<b>References</b>
+		<h3>References</h3>
 
 		<p id="citation-1">[1] Siburg, Karl Friedrich. The principle of least action in geometry and dynamics. No. 1844. Springer Science &amp; Business Media, 2004.</p>
 		<p id="citation-2">[2] Bizopoulos, Paschalis, and Dimitrios Koutsouris. "Sparsely activated networks." IEEE Transactions on Neural Networks and Learning Systems 32.3 (2020): 1304-1313.</p>
