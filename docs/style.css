@@ -1,12 +1,22 @@
-#action-div, #activation-function-control-div, #loss-control-div, #neuron-control-1-div, #neuron-control-2-div, #neuron-control-3-div {
+#action-div,
+#activation-function-control-div,
+#loss-control-div,
+#neuron-control-1-div,
+#neuron-control-2-div,
+#neuron-control-3-div {
 	background-color: Silver;
 }
 
-#input-control-1-div, #input-control-2-div, #input-control-3-div, #input-control-4-div, #input-control-5-div {
+#input-control-1-div,
+#input-control-2-div,
+#input-control-3-div,
+#input-control-4-div,
+#input-control-5-div {
 	background-color: Gainsboro;
 }
 
-#reference-control-div, #start-pause-reset-control-div {
+#reference-control-div,
+#start-pause-reset-control-div {
 	background-color: DarkGray;
 }
 
