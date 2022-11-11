@@ -12,4 +12,4 @@ cd action-as-information/
 
 # Usage
 make help		# Show help for node.
-make -C docs/ help 	# Show help for html.
+cd docs/ && make help	# Show help for html.
