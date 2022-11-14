@@ -6,10 +6,8 @@ POSIX mandatory utilities
 Make
 Docker
 
-# Preparation
+# Build
 git clone https://github.com/pbizopoulos/action-as-information
 cd action-as-information/
-
-# Usage
-make help		# Show help for node.
-cd docs/ && make help	# Show help for html.
+cd docs/ && make DEBUG=0 && cd ..
+make DEBUG=0				# Test build.
