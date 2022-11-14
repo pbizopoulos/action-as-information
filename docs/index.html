@@ -51,18 +51,30 @@
 		<h3>Interactive parametric dashboard</h3>
 		<p> Here we demonstrate the calculation of \(\mathcal{S}\) of motif-based time-series w.r.t. SANs as \(d_{0 \rightarrow \hat{x}}\). The dashboard consists of four types of blocks indicated by the background color: </p>
 		<ul>
-			<li><svg class="annotationSvg fill-white" width="14" height="14">
+			<li>
+				<svg class="annotationSvg fill-white" width="14" height="14">
 					<rect width="14" height="14" />
-				</svg>SAN architecture with data flow</li>
-			<li><svg class="annotationSvg fill-gainsboro" width="14" height="14">
+				</svg>
+				<span>SAN architecture with data flow</span>
+			</li>
+			<li>
+				<svg class="annotationSvg fill-gainsboro" width="14" height="14">
 					<rect width="14" height="14" />
-				</svg>parametric input control panel</li>
-			<li><svg class="annotationSvg fill-silver" width="14" height="14">
+				</svg>
+				<span>parametric input control panel</span>
+			</li>
+			<li>
+				<svg class="annotationSvg fill-silver" width="14" height="14">
 					<rect width="14" height="14" />
-				</svg>parametric SAN control panel</li>
-			<li><svg class="annotationSvg fill-darkgray" width="14" height="14">
+				</svg>
+				<span>parametric SAN control panel</span>
+			</li>
+			<li>
+				<svg class="annotationSvg fill-darkgray" width="14" height="14">
 					<rect width="14" height="14" />
-				</svg>start and reference control panel</li>
+				</svg>
+				<span>start and reference control panel</span>
+			</li>
 		</ul>
 		<div class="grid-container" id="grid-container-div">
 			<div class="border-solid grid-item visibility-hidden" id="input-control-1-div">
@@ -74,8 +86,13 @@
 			<div class="border-solid grid-item visibility-hidden" id="input-control-2-div">
 				<div> <input id="channel-use-input-checkbox" type="checkbox"> <svg height="14" id="input-channel-motif-colored-box-svg" width="14">
 						<rect height="14" width="14" />
-					</svg> <select id="input-channel-index-select"></select> </div>
-				<div> <span>type: </span><select id="input-channel-motif-type-select"></select> </div>
+					</svg>
+					<select id="input-channel-index-select"></select>
+				</div>
+				<div>
+					<span>type: </span>
+					<select id="input-channel-motif-type-select"></select>
+				</div>
 				<div>
 					<div id="channel-motif-size-text"></div> <input type="range" id="channel-motif-size-input-range" min="1" max="100">
 				</div>
@@ -114,15 +131,24 @@
 				<div> <label> standardize:<input id="standardize-input-checkbox" type="checkbox"> </label> </div>
 			</div>
 			<div class="border-solid grid-item visibility-hidden" id="neuron-control-1-div">
-				<div> <input id="neuron-use-input-checkbox" type="checkbox"> <svg height="14" id="neuron-colored-box-svg" width="14">
-						<rect height="14" width="14" />
-					</svg> <select id="neuron-index-select"></select> </div>
-				<div> <span>init: </span><select id="kernel-initialization-select"></select> </div>
 				<div>
-					<div id="kernel-size-text"></div> <input id="kernel-size-input-range" min="1" type="range">
+					<input id="neuron-use-input-checkbox" type="checkbox">
+					<svg height="14" id="neuron-colored-box-svg" width="14">
+						<rect height="14" width="14" />
+					</svg>
+					<select id="neuron-index-select"></select>
 				</div>
 				<div>
-					<div id="kernel-amplitude-text"></div> <input id="kernel-amplitude-input-range" max="1" min="-1" step="0.1" type="range">
+					<span>init: </span>
+					<select id="kernel-initialization-select"></select>
+				</div>
+				<div>
+					<div id="kernel-size-text"></div>
+					<input id="kernel-size-input-range" min="1" type="range">
+				</div>
+				<div>
+					<div id="kernel-amplitude-text"></div>
+					<input id="kernel-amplitude-input-range" max="1" min="-1" step="0.1" type="range">
 				</div>
 			</div>
 			<div class="border-solid grid-item visibility-hidden" id="neuron-control-2-div">
