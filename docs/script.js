@@ -930,9 +930,7 @@
 		} else {
 			removeNeuronKernelWeightAndVisualizations(neuronCurrentIndex);
 			neuronArray[neuronCurrentIndex].use = false;
-			if (neuronArray.every((v) => {
-					return v.use === false;
-				})) {
+			if (neuronArray.every(v => v.use === false)) {
 				d3.select('#example-select').dispatch('change');
 			}
 		}
@@ -1024,9 +1022,7 @@
 	});
 	d3.select('#start-pause-button').on('click', (event) => {
 		if (event.currentTarget.textContent == 'start') {
-			if (neuronArray.every((v) => {
-					return v.use === false;
-				})) {
+			if (neuronArray.every(v => v.use === false)) {
 				return;
 			}
 			event.currentTarget.textContent = 'pause';
