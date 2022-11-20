@@ -2,7 +2,11 @@
 
 .PHONY: all check clean help
 
-js_file_name = index.js
+DEBUG = 1
+
+debug_args = $$(test -t 0 && printf '%s' '--interactive --tty')
+gpus_arg = $$(command -v nvidia-container-toolkit > /dev/null && printf '%s' '--gpus all')
+python_file_name = main.py
 work_dir = /work
 
 all: bin/all
@@ -13,16 +17,16 @@ clean:
 	rm -rf bin/
 
 help:
-	@printf 'make all 	# Build binaries.\n'
-	@printf 'make check 	# Check code.\n'
-	@printf 'make clean 	# Remove binaries.\n'
-	@printf 'make help 	# Show help.\n'
+	@printf 'make all	# Build binaries (DEBUG=0 for disabling debug).\n'
+	@printf 'make check	# Check code.\n'
+	@printf 'make clean	# Remove binaries.\n'
+	@printf 'make help	# Show help.\n'
 
-$(js_file_name):
-	touch $(js_file_name)
+$(python_file_name):
+	printf "from os import environ\\n\\n\\ndef main():\\n    debug = environ['DEBUG']\\n\\n\\nif __name__ == '__main__':\\n    main()\\n" > $(python_file_name)
 
 .dockerignore:
-	printf '*\n!package.json\n' > .dockerignore
+	printf '*\n!pyproject.toml\n' > .dockerignore
 
 .gitignore:
 	printf 'bin/\n' > .gitignore
@@ -30,42 +34,36 @@ $(js_file_name):
 bin:
 	mkdir bin
 
-bin/all: $(js_file_name) .dockerignore .gitignore bin Dockerfile package.json
-	docker container run \
-		--cap-add=SYS_ADMIN \
-		--env NODE_PATH=/home/pptruser/node_modules/ \
-		--env PUPPETEER_CACHE_DIR=/home/pptruser/.cache/puppeteer/ \
-		--init \
-		--rm \
-		--user $$(id -u):$$(id -g) \
-		--volume $$(pwd):$(work_dir)/ \
-		--workdir $(work_dir)/ \
-		$$(docker image build --quiet .) node $(js_file_name)
-	touch bin/all
-
-bin/check: $(js_file_name) .dockerignore .gitignore bin bin/eslintrc.js
-	docker container run \
-		--env HOME=$(work_dir)/bin \
-		--rm \
-		--user $$(id -u):$$(id -g) \
-		--volume $$(pwd):$(work_dir)/ \
-		--workdir $(work_dir)/ \
-		node npx --yes eslint --config bin/eslintrc.js --fix $(js_file_name)
+bin/all: $(python_file_name) .dockerignore .gitignore bin Dockerfile pyproject.toml
 	docker container run \
 		$(debug_args) \
+		$(gpus_arg) \
+		--detach-keys 'ctrl-^,ctrl-^' \
+		--env DEBUG=$(DEBUG) \
+		--env HOME=$(work_dir)/bin \
+		--env PYTHONDONTWRITEBYTECODE=1 \
+		--rm \
+		--user $$(id -u):$$(id -g) \
+		--volume $$(pwd):$(work_dir)/ \
+		--workdir $(work_dir)/ \
+		$$(docker image build --quiet .) python3 $(python_file_name)
+	touch bin/all
+
+bin/check: $(python_file_name) bin
+	docker container run \
 		--env HOME=$(work_dir)/bin \
 		--rm \
 		--user $$(id -u):$$(id -g) \
 		--volume $$(pwd):$(work_dir)/ \
 		--workdir $(work_dir)/ \
-		node npx --yes js-beautify --end-with-newline --indent-with-tabs --no-preserve-newlines --replace --type js $(js_file_name)
+		python /bin/sh -c '\
+		python3 -m pip install --no-cache-dir --upgrade pip && \
+		python3 -m pip install --no-cache-dir https://github.com/pbizopoulos/source-code-simplifier/archive/main.zip && \
+		bin/.local/bin/source_code_simplifier $(python_file_name)'
 	touch bin/check
 
-bin/eslintrc.js: bin
-	echo 'module.exports = { "env": { "browser": true, "node": true, "es2021": true }, "extends": "eslint:recommended", "overrides": [ ], "parserOptions": { "ecmaVersion": "latest" }, "rules": { "indent": [ "error", "tab" ], "linebreak-style": [ "error", "unix" ], "quotes": [ "error", "single" ], "semi": [ "error", "always" ], "no-undef": 0 } }' > bin/eslintrc.js
-
 Dockerfile:
-	printf 'FROM ghcr.io/puppeteer/puppeteer\nCOPY package.json .\nRUN npm install\n' > Dockerfile
+	printf 'FROM python\nWORKDIR $(work_dir)\nCOPY pyproject.toml .\nRUN python3 -m pip install --no-cache-dir --upgrade pip && python3 -m pip install --no-cache-dir .\n' > Dockerfile
 
-package.json:
-	printf '{}\n' > package.json
+pyproject.toml:
+	printf '[project]\nname = "None"\nversion = "0"\ndependencies = []\n' > pyproject.toml
