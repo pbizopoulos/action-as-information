@@ -1,12 +1,11 @@
 from playwright.sync_api import sync_playwright
-import sys
 
 
 def main():
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(args=['--use-gl=egl'])
+        browser = playwright.chromium.launch()
         page = browser.new_page()
-        page.on('pageerror', lambda exception: sys.stdout.write(f'{exception}\n'))
+        page.on('pageerror', lambda exception: print(f'uncaught exception: {exception}'))
         page.goto('file:///work/docs/index.html')
         page.click('#start-pause-button')
         page.click('#start-pause-button')
