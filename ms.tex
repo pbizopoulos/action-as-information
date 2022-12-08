@@ -1,0 +1,83 @@
+\documentclass[twoside,11pt]{article}
+\usepackage{jmlr2e}
+
+\usepackage{lastpage}
+\jmlrheading{00}{0000}{1-\pageref{LastPage}}{1/21; Revised 0/00}{0/00}{00-0000}{Paschalis Bizopoulos}
+
+\ShortHeadings{Action as Information}{Paschalis Bizopoulos}
+\firstpageno{1}
+
+
+\begin{document}
+\title{Action as Information}
+\author{\name{Paschalis Bizopoulos} \email{pbizopoulos@protonmail.com} \addr{Thessaloniki, Greece}}
+
+\editor{My editor}
+
+\maketitle
+
+\begin{abstract}
+	We define action as proportional to the energy and description length of some data.
+	We argue that this definition of action can be used to quantify information and discuss how it relates with previous literature.
+\end{abstract}
+
+\begin{keywords}
+	action, information
+\end{keywords}
+
+\section{Introduction}
+Observers (e.g.\ biological/silicon brains, sensory organs, measuring instruments) as part of their environment, do not have enough capacity (e.g.\ neurons, transistors) to store their observations.
+To overcome this, part of their capacity could be used to learn and operate languages (natural, programming, computational, mathematical etc.).
+Languages allow the observers to describe their observations, to make sense of the world and/or communicate.
+However, this conciseness that languages provide comes with the cost of decreased observation accuracy.
+For example, the brain internally reconstructs (describes) sensory observations with accuracy constrained by the physiology of each sensory organ (e.g.\ the human eye cannot distinguish objects less than a tenth of a millimeter).
+Similarly, biological organisms may describe concepts or thoughts with varying levels of accuracy, constrained by the expressiveness of the language used within an environment.
+
+Action is a functional that receives the history of a system as input and outputs a number.
+In physics, the defining property of action is that it is minimized for the history that nature chose to follow (e.g.\ the specific path that an object followed when a force is applied to it).
+The system for which we will define action is data (e.g.\ a set of numbers such as vectors) and the history is the description of their change; how they `traversed' from their initial to their final values.
+Action has dimensions of energy \(\times\) time, however in our definition we use description length as a hardware-independent measure of time.
+In other words, action is proportional to the quantity (energy) and duration (description length) of the change of the data. 
+In the physical world, an object followed the one optimal path over the infinite possible paths, which can be found by minimizing the action (i.e.\ principle of least/stationary action~\cite{siburg2004principle}).
+However data have multiple descriptions, which poses the following questions: 
+\begin{itemize}
+	\item Is there an optimal description for some data? If yes then, how can we approximate it?
+	\item What does the value of the action mean?
+\end{itemize}
+We argue that action is the quantity of information of the data that is `perceived' by the description (viewed as an observer).
+
+\section{Formal definition of Action}
+Let \(x \in \mathbb{R}^n\) some data and \(d_{0 \rightarrow x} \in D\) a description of the traversal from \(0\) to \(x\), where \(D\) a description language.
+We define action \(\mathcal{S}\) of \(x\) w.r.t. \(d_{0 \rightarrow x}\) as:
+\[\mathcal{S} = \big\| x \big\| \big\| d_{0 \rightarrow x} \big\|\]
+, where \(\big\| \cdot \big\|\) denotes the norm.
+Calculating \(\big\| x \big\|\) is straightforward, however calculating \(\big\| d_{0 \rightarrow x} \big\|\) depends on \(d_{0 \rightarrow x}\), e.g.\ choosing a neural network as \(d_{0 \rightarrow x}\) we could have the following:
+\[d_{0 \rightarrow x} = W + a + c\]
+,where \(W\) is the number of weights, \(a\) the number of activations when fed with \(x\) and \(c\) a constant that is the description length of the neural network architecture. 
+Let \(\hat{x}\) an approximation of \(x\), then \(\mathcal{S}\) becomes:
+\[\mathcal{S} = \big\| \hat{x} \big\| \big\| d_{0 \rightarrow \hat{x}} \big\| + \big\| x - \hat{x} \big\| \big\| d_{\hat{x} \rightarrow x} \big\|\]
+, where \(d_{0 \rightarrow \hat{x}}\) is the description for \(\hat{x}\), \(\big\| x - \hat{x} \big\|\) the energy of the loss and \(\big\| d_{\hat{x} \rightarrow x} \big\|\) the description length of the loss which could be considered as equal to the length of \(x\) in the worst case.
+This formulation allows us to trade description length with energy and get closer to the minima of \(\mathcal{S}\).
+
+\section{Discussion}
+We can view \(\mathcal{S}\) as a deterministic metric of the informational content of \(x\) (observation) that is perceived by \(d_{0 \rightarrow \hat{x}}\) (observer); the lower the value of \(\mathcal{S}\), the less information (or less random) is perceived by \(d_{0 \rightarrow \hat{x}}\). 
+According to previous literature, information is traditionally quantified as proportional to the degree of surprise that is contained in the data~\cite{shannon1948mathematical}.
+However, this requires assuming the probability distribution of the data generator.
+Kolmogorov-based information (complexity) of some data is defined as the minimum description length, but this is uncomputable~\cite{li2008introduction} and requires an exact description of the data.
+\(\mathcal{S}\) can be seen as a generalization of Kolmogorov-based information; if we consider \(\hat{x} = x\), then the general problem of minimizing \(\mathcal{S}\) is equivalent with computing Kolmogorov complexity.
+\(\mathcal{S}\) also differs from algorithmic information theory~\cite{chaitin1977algorithmic}, since it does not depend on the concept of probability. 
+A question arises: `Is probabilistic information useful to us because of the limited brain capacity?'
+Moreover, independent of the chosen description language, having a limited capacity only gets you so far to approximate an action minima of some data.
+Thus there are data for which an action minima cannot be reached with a specific capacity; they will forever be out of reach of understanding and viewed as noise independent of the description we choose to describe them.
+Maybe that is why we need to aggregate due to limited capacity.
+Practically, \(\mathcal{S}\) minimization can be used for model selection in unsupervised problems and does not require an exact reconstruction like the Minimum Description Length (MDL)~\cite{rissanen1983universal}.
+From the same point of view, \(\mathcal{S}\) could be used as a quantification of the bias-variance trade-off. 
+\(\mathcal{S}\) minimization could be used to answer the question: `Why do we create and use languages?': `Because languages reduce the \(\mathcal{S}\) of our observations.'.
+Lastly, \(\mathcal{S}\) is a lossy compression metric and could be viewed as an intelligence metric, which is in contrast with previous literature that assumes intelligence is lossless compression~\cite{hutter2012human}.
+
+\section{Conclusion}
+By defining \(\mathcal{S}\) for data and their descriptions we conclude that minimizing \(\mathcal{S}\) provides us with accurate and concise descriptions of data in the same way that action from physics shows as the path that nature chose to take.
+
+\bibliography{ms.bib}
+
+\end{document}

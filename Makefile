@@ -2,11 +2,12 @@
 
 .PHONY: all check clean
 
-DEBUG = 1
-
-gpus_all_arg = $$(command -v nvidia-container-toolkit > /dev/null && printf '%s' '--gpus all')
-interactive_tty_arg = $$(test -t 0 && printf '%s' '--interactive --tty')
-python_file_name = main.py
+aux_file_name = ms.aux
+bbl_file_name = ms.bbl
+bib_file_name = ms.bib
+bib_target = $$(test -s $(bib_file_name) && printf 'bin/check-bib')
+fls_file_name = ms.fls
+tex_file_name = ms.tex
 
 all: bin/all
 
@@ -15,11 +16,14 @@ check: bin/check
 clean:
 	rm -rf bin/
 
-$(python_file_name):
-	printf "from os import environ\\n\\n\\ndef main():\\n    debug = environ['DEBUG']\\n\\n\\nif __name__ == '__main__':\\n    main()\\n" > $(python_file_name)
+$(bib_file_name):
+	touch $(bib_file_name)
+
+$(tex_file_name):
+	printf "\\\documentclass{article}\n\n\\\begin{document}\nTitle\n\\\end{document}\n" > $(tex_file_name)
 
 .dockerignore:
-	printf '*\n!pyproject.toml\n' > .dockerignore
+	printf '*\n' > .dockerignore
 
 .gitignore:
 	printf 'bin/\n' > .gitignore
@@ -27,36 +31,60 @@ $(python_file_name):
 bin:
 	mkdir bin
 
-bin/all: $(python_file_name) .dockerignore .gitignore bin Dockerfile pyproject.toml
+bin/all: $(bib_file_name) $(tex_file_name) .dockerignore .gitignore bin Dockerfile
+	touch bin/$(bbl_file_name) && cp bin/$(bbl_file_name) .
 	docker container run \
-		$(gpus_all_arg) \
-		$(interactive_tty_arg) \
-		--detach-keys 'ctrl-^,ctrl-^' \
-		--env DEBUG=$(DEBUG) \
-		--env HOME=/work/bin \
-		--env PYTHONDONTWRITEBYTECODE=1 \
 		--rm \
 		--user $$(id -u):$$(id -g) \
 		--volume $$(pwd):/work/ \
 		--workdir /work/ \
-		$$(docker image build --quiet .) python3 $(python_file_name)
+		$$(docker image build --quiet .) /bin/sh -c '\
+		latexmk -gg -pdf -outdir=bin/ $(tex_file_name) && \
+		tar cf bin/tex.tar $(bbl_file_name) $(bib_file_name) $(tex_file_name) $$(grep "^INPUT ./" bin/$(fls_file_name) | uniq | cut -b 9-)'
+	rm $(bbl_file_name)
 	touch bin/all
 
-bin/check: $(python_file_name) bin
+bin/check: .dockerignore .gitignore bin
+	$(MAKE) $(bib_target) bin/check-tex
+
+bin/check-bib: $(bib_file_name) .dockerignore .gitignore bin/all
+	docker container run \
+		--rm \
+		--user $$(id -u):$$(id -g) \
+		--volume $$(pwd):/work/ \
+		--workdir /work/ \
+		$$(docker image build --quiet .) /bin/sh -c '\
+		checkcites bin/$(aux_file_name)'
 	docker container run \
 		--env HOME=/work/bin \
 		--rm \
 		--user $$(id -u):$$(id -g) \
 		--volume $$(pwd):/work/ \
 		--workdir /work/ \
-		python /bin/sh -c '\
+		python /bin/sh -c "\
 		python3 -m pip install --upgrade pip && \
-		python3 -m pip install https://github.com/pbizopoulos/source-code-simplifier/archive/main.zip && \
-		bin/.local/bin/source_code_simplifier $(python_file_name)'
-	touch bin/check
+		python3 -m pip install rebiber && \
+		bin/.local/bin/rebiber --input_bib $(bib_file_name) --sort True"
+	docker container run \
+		$(interactive_tty_arg) \
+		--env HOME=/work/bin \
+		--rm \
+		--user $$(id -u):$$(id -g) \
+		--volume $$(pwd):/work/ \
+		--workdir /work/ \
+		node npm exec --yes -- git+https://github.com/FlamingTempura/bibtex-tidy.git --curly --tab --no-align --blank-lines --duplicates=key --sort-fields $(bib_file_name)
+	touch bin/check-bib
+
+bin/check-tex: $(tex_file_name) .dockerignore .gitignore bin
+	docker container run \
+		--rm \
+		--user $$(id -u):$$(id -g) \
+		--volume $$(pwd):/work/ \
+		--workdir /work/ \
+		$$(docker image build --quiet .) /bin/sh -c '\
+		chktex $(tex_file_name) && \
+		lacheck $(tex_file_name)'
+	touch bin/check-tex
 
 Dockerfile:
-	printf 'FROM python\nENV PIP_NO_CACHE_DIR=1\nWORKDIR /work\nCOPY pyproject.toml .\nRUN python3 -m pip install --upgrade pip && python3 -m pip install .\n' > Dockerfile
-
-pyproject.toml:
-	printf '[project]\nname = "UNKNOWN"\nversion = "0.0.0"\ndependencies = []\n' > pyproject.toml
+	printf 'FROM texlive/texlive\n' > Dockerfile

@@ -1,5 +1,4 @@
 # Action as Information
-https://pbizopoulos.github.io/action-as-information
 
 # Requirements
 POSIX mandatory utilities
@@ -9,5 +8,4 @@ Docker
 # Check code and build
 git clone https://github.com/pbizopoulos/action-as-information
 cd action-as-information/
-cd docs/ && make check all && cd ..
 make check all
