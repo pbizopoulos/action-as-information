@@ -1,11 +1,11 @@
 # Action as Information
 
 # Requirements
-POSIX shell & utilities
+POSIX Utilities
 Git
 Docker
 
-# Check code and build
+# Check and build code
 git clone https://github.com/pbizopoulos/action-as-information
 cd action-as-information/
 make check all
