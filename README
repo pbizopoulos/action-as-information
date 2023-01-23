@@ -5,7 +5,7 @@ POSIX Utilities
 Git
 Docker
 
-# Check and build code
+# Download, check and build
 git clone https://github.com/pbizopoulos/action-as-information
 cd action-as-information/
 make check all
