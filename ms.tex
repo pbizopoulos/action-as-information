@@ -2,7 +2,7 @@
 \usepackage{jmlr2e}
 
 \usepackage{lastpage}
-\jmlrheading{00}{0000}{1-\pageref{LastPage}}{1/21; Revised 0/00}{0/00}{00-0000}{Paschalis Bizopoulos}
+\jmlrheading{00}{0000}{1-\pageref{LastPage}}{1/21; Revised 0/00}{0/00}{00-0000}{Paschalis Bizopoulos} % chktex 8
 
 \ShortHeadings{Action as Information}{Paschalis Bizopoulos}
 \firstpageno{1}
@@ -48,7 +48,7 @@ We argue that action is the quantity of information of the data that is `perceiv
 
 \section{Formal definition of Action}
 Let \(x \in \mathbb{R}^n\) some data and \(d_{0 \rightarrow x} \in D\) a description of the traversal from \(0\) to \(x\), where \(D\) a description language.
-We define action \(\mathcal{S}\) of \(x\) w.r.t. \(d_{0 \rightarrow x}\) as:
+We define action \(\mathcal{S}\) of \(x\) w.r.t.\ \(d_{0 \rightarrow x}\) as:
 \[\mathcal{S} = \big\| x \big\| \big\| d_{0 \rightarrow x} \big\|\]
 , where \(\big\| \cdot \big\|\) denotes the norm.
 Calculating \(\big\| x \big\|\) is straightforward, however calculating \(\big\| d_{0 \rightarrow x} \big\|\) depends on \(d_{0 \rightarrow x}\), e.g.\ choosing a neural network as \(d_{0 \rightarrow x}\) we could have the following:
@@ -66,13 +66,13 @@ However, this requires assuming the probability distribution of the data generat
 Kolmogorov-based information (complexity) of some data is defined as the minimum description length, but this is uncomputable~\cite{li2008introduction} and requires an exact description of the data.
 \(\mathcal{S}\) can be seen as a generalization of Kolmogorov-based information; if we consider \(\hat{x} = x\), then the general problem of minimizing \(\mathcal{S}\) is equivalent with computing Kolmogorov complexity.
 \(\mathcal{S}\) also differs from algorithmic information theory~\cite{chaitin1977algorithmic}, since it does not depend on the concept of probability. 
-A question arises: `Is probabilistic information useful to us because of the limited brain capacity?'
+A question arises: `Is probabilistic information useful to us because of the limited brain capacity? '
 Moreover, independent of the chosen description language, having a limited capacity only gets you so far to approximate an action minima of some data.
 Thus there are data for which an action minima cannot be reached with a specific capacity; they will forever be out of reach of understanding and viewed as noise independent of the description we choose to describe them.
 Maybe that is why we need to aggregate due to limited capacity.
 Practically, \(\mathcal{S}\) minimization can be used for model selection in unsupervised problems and does not require an exact reconstruction like the Minimum Description Length (MDL)~\cite{rissanen1983universal}.
 From the same point of view, \(\mathcal{S}\) could be used as a quantification of the bias-variance trade-off. 
-\(\mathcal{S}\) minimization could be used to answer the question: `Why do we create and use languages?': `Because languages reduce the \(\mathcal{S}\) of our observations.'.
+\(\mathcal{S}\) minimization could be used to answer the question: `Why do we create and use languages? ': `Because languages reduce the \(\mathcal{S}\) of our observations'.
 Lastly, \(\mathcal{S}\) is a lossy compression metric and could be viewed as an intelligence metric, which is in contrast with previous literature that assumes intelligence is lossless compression~\cite{hutter2012human}.
 
 \section{Conclusion}
