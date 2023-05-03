@@ -8,4 +8,4 @@ Docker
 # Download, check and build
 git clone https://github.com/pbizopoulos/action-as-information
 cd action-as-information/
-cd latex/ && make clean check all && cd ..
+cd latex/ && make mostlyclean clean check all && cd ..
