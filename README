@@ -11,3 +11,4 @@ cd action-as-information/
 
 # Development
 cd latex/ && make clean check all && cd ..
+
